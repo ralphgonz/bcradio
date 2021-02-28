@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bandcamp Radio</title>
+  <link rel="icon" type="image/gif" href="http://muskratworks.com/images/scope.gif">
+  <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="js/bcradio.1.js"></script>
+  <script type="text/javascript">
+  	window.onload = function() {
+	  	bcradio.init();
+    }
+  </script>
+</head>
+
+<body background-color="#dddddd">
+
+    <div>
+        <img src="" id="album-art" />
+        <audio id="current-song" controls preload="none" src=""></audio>
+    </div>
+    <div>
+        <a href="#" onclick="bcradio.start();">Start</a><br/>
+        <a href="#" onclick="bcradio.stop();">Stop</a><br/>
+    </div>
+    
+
+</body>
+
+</html>
