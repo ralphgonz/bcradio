@@ -4,9 +4,14 @@
 var bcradio = (function() {
 
 	var tracks = [];
-	var current = null;
+	var shuffledTracks = [];
+	var current = 0;
 	var albumArtElt;
 	var currentSongElt;
+	var collectionTitleElt;
+	var userNameElt;
+	var historyElt;
+	var songTitleElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -14,10 +19,36 @@ var bcradio = (function() {
 	pub.init = function() {
 		albumArtElt = $('#album-art');
 		currentSongElt = $('#current-song');
+		collectionTitleElt = $('#collection-title');
+		userNameElt = $('#user-name');
+		historyElt = $('#history');
+		songTitleElt = $('#song-title');
 
 	};
 	pub.start = function() {
-		nextSong('https://bandcamp.com/stream_redirect?enc=mp3-128&track_id=2226458006&ts=1614466472&t=dfae9a285b11d17ee133d9c7534fc051fe412a77');
+		var userNameRequest = `/${userNameElt.val()}`;
+		$.get(userNameRequest, function(data){
+			var htmlData = $('<output>').append($.parseHTML(data));
+			var dataBlobJson = JSON.parse(htmlData.find("#pagedata").attr("data-blob"));
+
+			// Load initial page of tracks
+			var fanName = dataBlobJson.fan_data.name;
+			collectionTitleElt.text(`Bandcamp collection for ${fanName}`);
+			extractTracks(dataBlobJson.tracklists.collection);
+	
+			// Query for remaining numberToLoad tracks
+			var numberToLoad = historyElt.val();
+			var fanId = dataBlobJson.fan_data.fan_id;
+			var lastToken = dataBlobJson.collection_data.last_token;
+			var moreDataRequest = `?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
+			$.get(moreDataRequest, function(data) {
+				var result = JSON.parse(data);
+				extractTracks(result.tracklists);
+				// Start playing music
+				shuffle();
+				playNext();
+			});
+		});
 	};
 	pub.stop = function() {
 	};
@@ -25,18 +56,39 @@ var bcradio = (function() {
 	///////////////////////////////// private /////////////////////////////////////
 
 	/////////////////// Class: Track
-	function Track(songUrl, artUrl) {
+	function Track(artist, title, songUrl, artUrl) {
+		this.artist = artist;
+		this.title = title;
 		this.songUrl = songUrl;
 		this.artUrl = artUrl;
-		this.played = false;
-		this.previous = null;
-		this.next = null;
+	}
+
+	var extractTracks = function(collection) {
+		jQuery.each(collection, function() {
+			jQuery.each(this, function() {
+				var file = this.file["mp3-v0"] || this.file["mp3-128"];
+				tracks.push(new Track(this.artist, this.title, file));
+			})
+		})
+	}
+
+	// Knuth/Fisher-Yates Shuffle
+	var shuffle = function() {
+		shuffledTracks = tracks;
+		var currentIndex = shuffledTracks.length, temporaryValue, randomIndex;
+		while (0 !== currentIndex) {
+		  randomIndex = Math.floor(Math.random() * currentIndex);
+		  currentIndex -= 1;
+		  temporaryValue = shuffledTracks[currentIndex];
+		  shuffledTracks[currentIndex] = shuffledTracks[randomIndex];
+		  shuffledTracks[randomIndex] = temporaryValue;
+		}	  
 	}
 	
 	// Doubles as entry point for manually-clicked song, without affecting sequence
 	var setSong = function(track) {
-		track.played = true;
-		albumArtElt.attr('src', track.artUrl);
+		// albumArtElt.attr('src', track.artUrl);
+		songTitleElt.text(`${track.artist}: ${track.title}`)
 		currentSongElt.attr('src', track.songUrl);
 		currentSongElt.trigger('load');
 		currentSongElt.trigger('play');
@@ -45,19 +97,9 @@ var bcradio = (function() {
 		 });
 	}
 
-	var nextUnplayed = function() {
-		return 0;
-	}
-
 	var playNext = function() {
-		if (current === null) {
-			current = nextUnplayed();
-		} else {
-			current = current.next;
-		}
-		current.next = nextUnplayed();
-		current.next.previous = current;
-		setSong(current);
+		if (current >= shuffledTracks.length) { current = 0; }
+		setSong(shuffledTracks[current++]);
 	}
 
 	
