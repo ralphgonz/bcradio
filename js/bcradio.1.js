@@ -90,7 +90,10 @@ var bcradio = (function() {
 
 	var findNextUnplayed = function() {
 		while (current < tracks.length && tracks[current].isPlayed) { ++current; }
-		if (current >= tracks.length) { clearCounts(); }
+		if (current >= tracks.length) {
+			clearCounts();
+			pub.resequence();
+		}
 	}
 
 	var populateCollectionList = function() {
@@ -190,10 +193,8 @@ var bcradio = (function() {
 	}
 
 	var clearCounts = function() {
-		current = 0;
 		for (var i=0 ; i<tracks.length ; ++i) {
 			tracks[i].isPlayed = false;
-			markAsPlayed(i);
 		};
 	}
 	
