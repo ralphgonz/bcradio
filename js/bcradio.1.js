@@ -31,7 +31,6 @@ var bcradio = (function() {
 		collectionListElt = $("#collection-list");
 		collectionListElt.on('change', function(){
 			current = $(this).val();
-			tracks[current].isPlayed = false;
 			pub.next();
 		});
 		paramsFormElt.submit(function (evt){
@@ -71,6 +70,7 @@ var bcradio = (function() {
 	}
 
 	pub.next = function() {
+		tracks[current].isPlayed = false;
 		currentSongElt.off();
 		currentSongElt.trigger('pause');
 		playNext();
