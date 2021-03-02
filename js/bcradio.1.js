@@ -114,7 +114,7 @@ var bcradio = (function() {
 
 		// Load initial page of tracks
 		var fanName = dataBlobJson.fan_data.name;
-		collectionTitleElt.text(`${fanName}'s Bandcamp collection. `);
+		collectionTitleElt.text(`${fanName}'s collection. `);
 		extractTracks(dataBlobJson.tracklists.collection);
 
 		// Query for remaining numberToLoad tracks

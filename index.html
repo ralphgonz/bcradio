@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <link href="css/bcradio.css" rel="stylesheet" type="text/css">
   <meta charset="UTF-8">
   <title>Bandcamp Radio</title>
   <link rel="icon" type="image/gif" href="http://muskratworks.com/images/scope.gif">
@@ -13,7 +14,7 @@
   </script>
 </head>
 
-<body background-color="#555555">
+<body>
 
     <div id="params">
         <form id="params-form" name="params-form">
@@ -26,9 +27,11 @@
     <div id="player" style="display:none">
         <!-- <img src="" id="album-art" /> -->
         <p id="song-title"></p>
-        <img src="images/prev-circle-outline.png" width=40 height=40 onclick="bcradio.prev();" />
-        <audio id="current-song" controls preload="none" src=""></audio>
-        <img src="images/next-circle-outline.png" width=40 height=40 onclick="bcradio.next();" />
+        <div id="controls">
+            <img src="images/prev-circle-outline.png" alt="prev" width=40 height=40 onclick="bcradio.prev();" />
+            <audio id="current-song" controls preload="none" src=""></audio>
+            <img src="images/next-circle-outline.png" alt="next" width=40 height=40 onclick="bcradio.next();" />
+        </div>
 
         <div>
             <span id="collection-title"></span>
@@ -37,10 +40,11 @@
             <!-- <input type="radio" id="radio-most-recent" name="sequencing" value="most-recent" onclick="bcradio.resequence();" /><label for="radio-most-recent">Most Recent</label> -->
         </div>
 
-        <select id="collection-list" name="collection" size=20>
+        <select id="collection-list" name="collection" size=15>
         </select>
     </div>
     
+    <p id="help">Bandcamp Collection Player. <a href="https://github.com/ralphgonz/bcradio">Help & src.</a></p>
 
 </body>
 </html>

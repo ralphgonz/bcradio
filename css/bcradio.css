@@ -1,0 +1,41 @@
+body {
+    padding: 10px;
+    font-family: arial, sans-serif;
+    color: orange;
+    background-color: darkslateblue;
+}
+
+a:link {
+    color: #ff6600;
+}
+
+a:visited {
+    color: #ff6600;
+}
+img {
+    border-width: 0;
+}
+a:link.no-underline {
+    text-decoration:none;
+}
+a:visited.no-underline {
+    text-decoration:none;
+}
+a:hover.no-underline {
+    text-decoration: underline;
+}
+select {
+    margin-top:8px;
+    width:400px
+}
+#controls {
+    margin-bottom:30px;
+}
+#song-title {
+    font-size: 24;
+    margin: 0 0 12 0
+}
+#help {
+    font-size: smaller;
+    margin: 10 0 0 0
+}
