@@ -19,11 +19,9 @@ class Response
 end
 
 server = TCPServer.new 5678
-$stdout.sync = true
 
 while session = server.accept
   request = session.gets
-  puts "REQUEST: #{request}"
   next if request.nil?
 
   method, full_path = request.split(/\s/)
@@ -32,7 +30,6 @@ while session = server.accept
   responseData = ''
   if params.nil?
     _, query = full_path.split('/', 2)
-    puts "QUERY: #{query}"
 
     if query.nil? || query.empty?
       query = "index.html"
@@ -46,12 +43,9 @@ while session = server.accept
       responseData = Net::HTTP.get_response(uri).body
     end
   else
-    puts "PARAMS: #{params}"
     pHash = CGI::parse(params)
-    puts "FANID: #{pHash['fan-id']}, OLDERTHANTOKEN: #{pHash['older-than-token']}, COUNT: #{pHash['count']}"
     uri = URI("https://bandcamp.com/api/fancollection/1/collection_items")
     body = "{\"fan_id\":#{pHash['fan-id'].first()},\"older_than_token\":\"#{pHash['older-than-token'].first()}\",\"count\":#{pHash['count'].first()}}"
-    puts "BODY: #{body}"
     responseData = Net::HTTP.post(uri, body, "Content-Type" => "application/json").body
   end
 
