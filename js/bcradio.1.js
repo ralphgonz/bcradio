@@ -129,7 +129,7 @@ var bcradio = (function() {
 
 			// Load initial page of tracks
 			fanName = dataBlobJson.fan_data.name;
-			collectionTitleElt.text(`${fanName}'s collection. `);
+			collectionTitleElt.text(`${fanName}'s collection`);
 			extractTracks(dataBlobJson.tracklists.collection);
 		} finally {
 			if (!dataBlobJson || !fanName || tracks.length == 0) {

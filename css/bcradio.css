@@ -26,13 +26,16 @@ a:hover.no-underline {
 }
 select {
     margin-top:8px;
-    width:400px
+    width:490px
 }
 .text-label {
     display: inline-block;
     width: 250px;
     text-align:left;
     margin-bottom: 8px;
+}
+audio {
+    width: 400px;
 }
 #controls {
     margin-bottom:30px;
@@ -47,4 +50,10 @@ select {
 }
 #submit-button {
     margin-top: 10px;
+}
+#list-title {
+    width: 490px
+}
+#sort-controls {
+    float:right;
 }
