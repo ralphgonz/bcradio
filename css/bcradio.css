@@ -28,6 +28,12 @@ select {
     margin-top:8px;
     width:400px
 }
+.text-label {
+    display: inline-block;
+    width: 250px;
+    text-align:left;
+    margin-bottom: 8px;
+}
 #controls {
     margin-bottom:30px;
 }
@@ -38,4 +44,7 @@ select {
 #help {
     font-size: smaller;
     margin: 10 0 0 0
+}
+#submit-button {
+    margin-top: 10px;
 }

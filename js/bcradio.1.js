@@ -40,8 +40,15 @@ var bcradio = (function() {
 	};
 
 	pub.start = function() {
+		if (!userNameElt.val()) {
+			reportBadUsername();
+			return;
+		}
 		var userNameRequest = `/${userNameElt.val()}`;
-		$.get(userNameRequest, loadInitialData);
+		$.get(userNameRequest, loadInitialData)
+		.fail(function() {
+			reportBadUsername();
+		});
 	};
 
 	pub.resequence = function() {
@@ -108,21 +115,38 @@ var bcradio = (function() {
 		$(`#collection-list option[value=${i}]`).attr('style', tracks[i].isPlayed ? 'background-color:lightgrey' : '');
 	}
 
-	var loadInitialData = function(data) {
-		var htmlData = $('<output>').append($.parseHTML(data));
-		var dataBlobJson = JSON.parse(htmlData.find("#pagedata").attr("data-blob"));
+	var reportBadUsername = function() {
+		alert(`No data found for username ${userNameElt.val()}`)
+	}
 
-		// Load initial page of tracks
-		var fanName = dataBlobJson.fan_data.name;
-		collectionTitleElt.text(`${fanName}'s collection. `);
-		extractTracks(dataBlobJson.tracklists.collection);
+	var loadInitialData = function(data) {
+		var dataBlobJson;
+		var fanName;
+		try {
+			var htmlData = $('<output>').append($.parseHTML(data));
+			var dataBlob = htmlData.find("#pagedata").attr("data-blob");
+			dataBlobJson = JSON.parse(dataBlob);
+
+			// Load initial page of tracks
+			fanName = dataBlobJson.fan_data.name;
+			collectionTitleElt.text(`${fanName}'s collection. `);
+			extractTracks(dataBlobJson.tracklists.collection);
+		} finally {
+			if (!dataBlobJson || !fanName || tracks.length == 0) {
+				reportBadUsername();
+				return;
+			}
+		}
 
 		// Query for remaining numberToLoad tracks
 		var numberToLoad = historyElt.val();
 		var fanId = dataBlobJson.fan_data.fan_id;
 		var lastToken = dataBlobJson.collection_data.last_token;
 		var moreDataRequest = `?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
-		$.get(moreDataRequest, loadMoreData);
+		$.get(moreDataRequest, loadMoreData)
+		.fail(function() {
+			alert(`Failed attempting to retrieve ${numberToLoad} additional elements`);
+		});
 	}
 
 	var loadMoreData = function(data) {
