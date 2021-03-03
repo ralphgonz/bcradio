@@ -1,6 +1,6 @@
 # bcradio
 
-_Tiny web app to shuffle-play your Bandcamp collection_
+_Tiny web app to shuffle-play your Bandcamp collection._ [On the air here.](http://bcradio.muskratworks.com)
 
 ## Getting started
 
@@ -18,9 +18,9 @@ Navigate to `http://localhost:5678`. Enter your bandcamp username and press `Ent
 
 ## Limitations
 
-Bandcamp does not publish an api to get fan tracks, so this app has some limitations and may break in the future.
+* Bandcamp does not publish an api to get fan tracks, so this app has some limitations and may break in the future.
 * You may get all tracks on album purchases or only one representative track per album
 * You may get mp3 V0 quality or 128k quality
-* You must be logged into Bandcamp in your browser to authorize repeated play requests from this app
+* You must be logged into Bandcamp in your browser to authorize repeated play requests
 
 
