@@ -19,12 +19,15 @@ class Response
 end
 
 server = TCPServer.new 5678
+$stdout.sync = true
 
 while session = server.accept
   request = session.gets
   next if request.nil?
+  puts "REQUEST: #{request}"
 
   method, full_path = request.split(/\s/)
+  next if full_path.nil?
   _, params = full_path.split('?')
 
   responseData = ''
