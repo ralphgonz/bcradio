@@ -4,8 +4,9 @@
 var bcradio = (function() {
 
 	var tracks = [];
+	var arts = {};
 	var current = 0;
-	// var albumArtElt;
+	var albumArtElt;
 	var currentSongElt;
 	var collectionTitleElt;
 	var userNameElt;
@@ -20,7 +21,7 @@ var bcradio = (function() {
 	var pub = {};
 	
 	pub.init = function() {
-		// albumArtElt = $('#album-art');
+		albumArtElt = $('#album-art');
 		currentSongElt = $('#current-song');
 		collectionTitleElt = $('#collection-title');
 		userNameElt = $('#user-name');
@@ -91,13 +92,13 @@ var bcradio = (function() {
 	///////////////////////////////// private /////////////////////////////////////
 
 	/////////////////// Class: Track
-	function Track(artist, title, songUrl, artUrl) {
+	function Track(artist, title, songUrl, artId) {
 		this.artist = artist;
 		this.title = title;
 		this.songUrl = songUrl;
-		this.artUrl = artUrl;
 		this.isPlayed = false;
 		this.recent = tracks.length;
+		this.artId = artId;
 	}
 
 	var findNextUnplayed = function() {
@@ -135,6 +136,7 @@ var bcradio = (function() {
 			// Load initial page of tracks
 			fanName = dataBlobJson.fan_data.name;
 			collectionTitleElt.text(`${fanName}'s collection`);
+			extractArts(Object.values(dataBlobJson.item_cache.collection)); // (a<album_id> or t<track_id>) -> { album_id, featured_track, item_art_id, item_id}
 			extractTracks(dataBlobJson.tracklists.collection);
 		} finally {
 			if (!dataBlobJson || !fanName || tracks.length == 0) {
@@ -157,8 +159,17 @@ var bcradio = (function() {
 		});
 	}
 
+	var largeAlbumArt = function(artId) {
+		if (artId) {
+			return `https://f4.bcbits.com/img/a${artId}_10.jpg`
+		} else {
+			return '';
+		}
+	}
+
 	var loadMoreData = function(data) {
 		var result = JSON.parse(data);
+		extractArts(result.items); // [{ album_id, featured_track, item_art_id, item_id}, ...]
 		extractTracks(result.tracklists);
 		startPlaying();
 	}
@@ -170,13 +181,23 @@ var bcradio = (function() {
 		playNext();
 	}
 
+	var extractArts = function(items) {
+		for (const info of items) {
+			if (info["item_id"]) {
+				arts[info["item_id"]] = info["item_art_id"];
+			}
+		}
+	}
+
 	var extractTracks = function(collection) {
-		jQuery.each(collection, function() {
-			jQuery.each(this, function() {
-				var file = this.file["mp3-v0"] || this.file["mp3-128"];
-				tracks.push(new Track(this.artist, this.title, file));
-			})
-		})
+		for (const [album, songs] of Object.entries(collection)) {
+			songs.forEach(function(track) {
+				var file = track.file["mp3-v0"] || track.file["mp3-128"];
+				var itemId = album.substring(1);
+				var artId = arts[itemId];
+				tracks.push(new Track(track.artist, track.title, file, artId));
+			});
+		}
 	}
 
 	// Knuth/Fisher-Yates Shuffle
@@ -209,7 +230,7 @@ var bcradio = (function() {
 		tracks[i].isPlayed = true;
 		markAsPlayed(i);
 		collectionListElt.val(i);
-		// albumArtElt.attr('src', track.artUrl);
+		albumArtElt.attr('src', largeAlbumArt(tracks[i].artId));
 		songTitleElt.text(`${tracks[i].artist}: ${tracks[i].title}`)
 		currentSongElt.attr('src', tracks[i].songUrl);
 		currentSongElt.trigger('load');

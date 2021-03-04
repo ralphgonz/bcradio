@@ -1,5 +1,4 @@
 body {
-    padding: 10px;
     font-family: arial, sans-serif;
     color: orange;
     background-color: darkslateblue;
@@ -25,7 +24,7 @@ a:hover.no-underline {
     text-decoration: underline;
 }
 select {
-    margin-top:8px;
+    margin-top:4px;
     width:490px
 }
 .text-label {
@@ -38,15 +37,20 @@ audio {
     width: 400px;
 }
 #controls {
-    margin-bottom:30px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 #song-title {
     font-size: 24;
-    margin: 0 0 12 0
+    margin: 0 0 24 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 490px;
 }
 #help {
     font-size: smaller;
-    margin: 10 0 0 0
+    margin: 4 0 0 0
 }
 #submit-button {
     margin-top: 10px;
@@ -56,4 +60,9 @@ audio {
 }
 #sort-controls {
     float:right;
+}
+#album-art {
+    margin-bottom: 6px;
+    width: 490px;
+    height: 490px;
 }

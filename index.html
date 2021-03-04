@@ -26,13 +26,15 @@
     </div>
 
     <div id="player" style="display:none">
-        <!-- <img src="" id="album-art" /> -->
-        <p id="song-title"></p>
+        <img src="" id="album-art" />
+
         <div id="controls">
             <img src="images/prev-circle-outline.png" alt="prev" width=40 height=40 onclick="bcradio.prev();" />
             <audio id="current-song" controls preload="none" src=""></audio>
             <img src="images/next-circle-outline.png" alt="next" width=40 height=40 onclick="bcradio.next();" />
         </div>
+
+        <p id="song-title"></p>
 
         <div id="list-title">
             <span id="collection-title"></span>
@@ -43,7 +45,7 @@
             </div>
         </div>
 
-        <select id="collection-list" name="collection" size=15>
+        <select id="collection-list" name="collection" size=8>
         </select>
     </div>
     
