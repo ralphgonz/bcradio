@@ -13,7 +13,7 @@ Fill in your info:
 ## Limitations
 
 * Bandcamp does not publish an api to get fan tracks, so this app has some limitations and may break in the future
-* You must be logged into Bandcamp in your browser to authorize repeated play requests
+* You should be logged into Bandcamp in your browser so that repeated play requests are authorized
 * If you are using this tool to audition another user's collection, playback may fail on unpurchased tracks that have exhausted their play counts
 
 -------------

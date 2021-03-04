@@ -24,16 +24,15 @@ $stdout.sync = true
 while session = server.accept
   request = session.gets
   next if request.nil?
-  puts "REQUEST: #{request}"
 
-  method, full_path = request.split(/\s/)
-  next if full_path.nil?
-  _, paramString = full_path.split('?')
+  method, path = request.split(/\s/)
+  next if path.nil?
+  path, paramString = path.split('?')
   params = paramString.nil? ? {} : CGI::parse(paramString)
 
   responseData = ''
   if !params.key?("fan-id")
-    _, query = full_path.split('/', 2)
+    _, query = path.split('/', 2)
 
     if query.nil? || query.empty?
       query = "index.html"
@@ -43,6 +42,7 @@ while session = server.accept
       responseData = File.binread(query)
     else
       userName = query
+      puts "User: #{userName}"
       uri = URI("https://bandcamp.com/#{userName}")
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
         bcRequest = Net::HTTP::Get.new(uri.request_uri)
