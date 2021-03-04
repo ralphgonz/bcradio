@@ -14,6 +14,7 @@ var bcradio = (function() {
 	var paramsElt;
 	var playerElt;
 	var collectionListElt;
+	var identityCookieElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -28,6 +29,7 @@ var bcradio = (function() {
 		paramsElt = $('#params');
 		playerElt = $('#player');
 		paramsFormElt = $('#params-form');
+		identityCookieElt = $('#identity-cookie');
 		collectionListElt = $("#collection-list");
 		collectionListElt.on('change', function(){
 			current = $(this).val();
@@ -45,6 +47,9 @@ var bcradio = (function() {
 			return;
 		}
 		var userNameRequest = `/${userNameElt.val()}`;
+		if ($(identityCookieElt).val()) {
+			userNameRequest = `${userNameRequest}?identity-cookie=${$(identityCookieElt).val()}`;
+		}
 		$.get(userNameRequest, loadInitialData)
 		.fail(function() {
 			reportBadUsername();
@@ -143,6 +148,9 @@ var bcradio = (function() {
 		var fanId = dataBlobJson.fan_data.fan_id;
 		var lastToken = dataBlobJson.collection_data.last_token;
 		var moreDataRequest = `?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
+		if ($(identityCookieElt).val()) {
+			moreDataRequest = `${moreDataRequest}&identity-cookie=${$(identityCookieElt).val()}`;
+		}
 		$.get(moreDataRequest, loadMoreData)
 		.fail(function() {
 			alert(`Failed attempting to retrieve ${numberToLoad} additional elements`);

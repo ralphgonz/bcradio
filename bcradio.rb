@@ -28,10 +28,11 @@ while session = server.accept
 
   method, full_path = request.split(/\s/)
   next if full_path.nil?
-  _, params = full_path.split('?')
+  _, paramString = full_path.split('?')
+  params = paramString.nil? ? {} : CGI::parse(paramString)
 
   responseData = ''
-  if params.nil?
+  if !params.key?("fan-id")
     _, query = full_path.split('/', 2)
 
     if query.nil? || query.empty?
@@ -43,13 +44,25 @@ while session = server.accept
     else
       userName = query
       uri = URI("https://bandcamp.com/#{userName}")
-      responseData = Net::HTTP.get_response(uri).body
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        bcRequest = Net::HTTP::Get.new(uri.request_uri)
+        if params.key?("identity-cookie")
+          bcRequest['Cookie'] = "identity=#{CGI.escape(params['identity-cookie'].first())}"
+        end
+        responseData = http.request(bcRequest).body
+      end
     end
   else
-    pHash = CGI::parse(params)
     uri = URI("https://bandcamp.com/api/fancollection/1/collection_items")
-    body = "{\"fan_id\":#{pHash['fan-id'].first()},\"older_than_token\":\"#{pHash['older-than-token'].first()}\",\"count\":#{pHash['count'].first()}}"
-    responseData = Net::HTTP.post(uri, body, "Content-Type" => "application/json").body
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      bcRequest = Net::HTTP::Post.new(uri.request_uri)
+      if params.key?("identity-cookie")
+        bcRequest['Cookie'] = "identity=#{CGI.escape(params['identity-cookie'].first())}"
+      end
+      bcRequest['Content-Type'] = "application/json"
+      bcRequest.body = "{\"fan_id\":#{params['fan-id'].first()},\"older_than_token\":\"#{params['older-than-token'].first()}\",\"count\":#{params['count'].first()}}"
+      responseData = http.request(bcRequest).body
+    end
   end
 
   response = Response.new(code: 200, data: responseData)
