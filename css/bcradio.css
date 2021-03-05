@@ -1,15 +1,15 @@
 body {
     font-family: arial, sans-serif;
-    color: orange;
+    color: whitesmoke;
     background-color: #555555;
 }
 
 a:link {
-    color: #ff6600;
+    color: whitesmoke;
 }
 
 a:visited {
-    color: #ff6600;
+    color: whitesmoke;
 }
 img {
     border-width: 0;
