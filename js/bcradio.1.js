@@ -16,6 +16,7 @@ var bcradio = (function() {
 	var playerElt;
 	var collectionListElt;
 	var identityCookieElt;
+	var thumbnailElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -31,6 +32,7 @@ var bcradio = (function() {
 		playerElt = $('#player');
 		paramsFormElt = $('#params-form');
 		identityCookieElt = $('#identity-cookie');
+		thumbnailElt = $('#thumbnail');
 		collectionListElt = $("#collection-list");
 		collectionListElt.on('change', function(){
 			current = $(this).val();
@@ -159,6 +161,14 @@ var bcradio = (function() {
 		});
 	}
 
+	var smallAlbumArt = function(artId) {
+		if (artId) {
+			return `https://f4.bcbits.com/img/a${artId}_3.jpg`
+		} else {
+			return '';
+		}
+	}
+
 	var largeAlbumArt = function(artId) {
 		if (artId) {
 			return `https://f4.bcbits.com/img/a${artId}_10.jpg`
@@ -232,6 +242,8 @@ var bcradio = (function() {
 		collectionListElt.val(i);
 		albumArtElt.attr('src', largeAlbumArt(tracks[i].artId));
 		songTitleElt.text(`${tracks[i].artist}: ${tracks[i].title}`)
+		thumbnailElt.attr('href', smallAlbumArt(tracks[i].artId));
+		document.title = `${tracks[i].title} (${tracks[i].artist})`;
 		currentSongElt.attr('src', tracks[i].songUrl);
 		currentSongElt.trigger('load');
 		currentSongElt.trigger('play');
