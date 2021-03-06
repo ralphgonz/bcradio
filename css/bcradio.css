@@ -7,34 +7,17 @@ body {
 a {
     color: whitesmoke;
 }
-
-/* a:visited {
-    color: whitesmoke;
-} */
 img {
     border-width: 0;
 }
-/* a:link.no-underline {
-    text-decoration:none;
-}
-a:visited.no-underline {
-    text-decoration:none;
-}
-a:hover.no-underline {
-    text-decoration: underline;
-} */
-select {
-    margin-top:4px;
-    width:490px
+audio {
+    width: 400px;
 }
 .text-label {
     display: inline-block;
     width: 250px;
     text-align:left;
     margin-bottom: 8px;
-}
-audio {
-    width: 400px;
 }
 #controls {
     margin-top: 4px;
@@ -68,13 +51,18 @@ audio {
     margin-top: 10px;
 }
 #list-title {
-    width: 490px
+    width: 490px;
+    font-size: smaller;
+    margin-bottom: 2px;
 }
 #sort-controls {
     float:right;
+    margin-top:-4px;
 }
 #album-art {
     margin-bottom: 6px;
     width: 490px;
-    height: 490px;
+}
+#collection-list {
+    width:490px;
 }

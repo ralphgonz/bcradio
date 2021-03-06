@@ -146,7 +146,15 @@ var bcradio = (function() {
 
 			// Load initial page of tracks
 			fanName = dataBlobJson.fan_data.name;
-			collectionTitleElt.text(`${fanName}'s collection`);
+			var cookieStatus = "";
+			if ($(identityCookieElt).val()) {
+				if (dataBlobJson.identities.fan) {
+					cookieStatus = " (cookied)";
+				} else {
+					cookieStatus = " (invalid cookie)";
+				}
+			}
+			collectionTitleElt.text(`${fanName}'s collection${cookieStatus}`);
 			extractInfos(Object.values(dataBlobJson.item_cache.collection)); // (a<album_id> or t<track_id>) -> { album_id, featured_track, item_art_id, item_id}
 			extractTracks(dataBlobJson.tracklists.collection);
 		} finally {
