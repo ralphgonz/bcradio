@@ -1,3 +1,4 @@
+/************* Common **************/
 body {
     font-family: arial, sans-serif;
     color: whitesmoke;
@@ -11,7 +12,7 @@ img {
     border-width: 0;
 }
 audio {
-    width: 400px;
+    flex-grow: 1;
 }
 .text-label {
     display: inline-block;
@@ -19,9 +20,10 @@ audio {
     text-align:left;
     margin-bottom: 8px;
 }
-#controls {
+#audio-controls {
     margin-top: 4px;
     margin-bottom: 4px;
+    display: flex;
 }
 #song-title {
     text-decoration:none;
@@ -51,7 +53,7 @@ audio {
     margin-top: 10px;
 }
 #list-title {
-    width: 490px;
+    width: 100%;
     font-size: smaller;
     margin-bottom: 2px;
 }
@@ -61,8 +63,45 @@ audio {
 }
 #album-art {
     margin-bottom: 6px;
-    width: 490px;
+    height: auto;
+    width: 100%;
 }
 #collection-list {
-    width:490px;
+    width:100%;
+}
+#not-art {
+    height: auto;
+    width:100%;
+}
+
+/*************** Landscape ****************/
+@media (min-aspect-ratio: 1/1) {
+    #not-art {
+        min-width:490px;
+        width: 100%;
+        /* flex-shrink: 2; */
+    }
+    #album-art {
+        height: 100%;
+        object-fit:contain;
+        align-self: self-start;
+        flex-basis: -moz-min-content;
+        max-width: 100%;
+        width: auto;
+    }
+    #player {
+        height: 100%;
+        display:flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    #song-title {
+        width: auto;
+    }
+    #item-link {
+        align-self:normal;
+        /* flex-basis:-moz-available; */
+        display: flex;
+        flex-direction: column;
+    }
 }
