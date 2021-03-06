@@ -4,7 +4,7 @@
 var bcradio = (function() {
 
 	var tracks = [];
-	var arts = {};
+	var itemInfos = {};
 	var current = 0;
 	var albumArtElt;
 	var currentSongElt;
@@ -17,6 +17,7 @@ var bcradio = (function() {
 	var collectionListElt;
 	var identityCookieElt;
 	var thumbnailElt;
+	var itemLinkElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -33,6 +34,7 @@ var bcradio = (function() {
 		paramsFormElt = $('#params-form');
 		identityCookieElt = $('#identity-cookie');
 		thumbnailElt = $('#thumbnail');
+		itemLinkElt = $('#item-link');
 		collectionListElt = $("#collection-list");
 		collectionListElt.on('change', function(){
 			current = $(this).val();
@@ -94,13 +96,20 @@ var bcradio = (function() {
 	///////////////////////////////// private /////////////////////////////////////
 
 	/////////////////// Class: Track
-	function Track(artist, title, songUrl, artId) {
+	function Track(artist, title, songUrl, artId, itemUrl) {
 		this.artist = artist;
 		this.title = title;
 		this.songUrl = songUrl;
 		this.isPlayed = false;
 		this.recent = tracks.length;
 		this.artId = artId;
+		this.itemUrl = itemUrl;
+	}
+
+	/////////////////// Class: ItemInfo
+	function ItemInfo(artId, itemUrl) {
+		this.artId = artId;
+		this.itemUrl = itemUrl;
 	}
 
 	var findNextUnplayed = function() {
@@ -138,7 +147,7 @@ var bcradio = (function() {
 			// Load initial page of tracks
 			fanName = dataBlobJson.fan_data.name;
 			collectionTitleElt.text(`${fanName}'s collection`);
-			extractArts(Object.values(dataBlobJson.item_cache.collection)); // (a<album_id> or t<track_id>) -> { album_id, featured_track, item_art_id, item_id}
+			extractInfos(Object.values(dataBlobJson.item_cache.collection)); // (a<album_id> or t<track_id>) -> { album_id, featured_track, item_art_id, item_id}
 			extractTracks(dataBlobJson.tracklists.collection);
 		} finally {
 			if (!dataBlobJson || !fanName || tracks.length == 0) {
@@ -179,7 +188,7 @@ var bcradio = (function() {
 
 	var loadMoreData = function(data) {
 		var result = JSON.parse(data);
-		extractArts(result.items); // [{ album_id, featured_track, item_art_id, item_id}, ...]
+		extractInfos(result.items); // [{ album_id, featured_track, item_art_id, item_id}, ...]
 		extractTracks(result.tracklists);
 		startPlaying();
 	}
@@ -191,10 +200,10 @@ var bcradio = (function() {
 		playNext();
 	}
 
-	var extractArts = function(items) {
+	var extractInfos = function(items) {
 		for (const info of items) {
 			if (info["item_id"]) {
-				arts[info["item_id"]] = info["item_art_id"];
+				itemInfos[info["item_id"]] = new ItemInfo(info["item_art_id"], info["item_url"]);
 			}
 		}
 	}
@@ -204,8 +213,7 @@ var bcradio = (function() {
 			songs.forEach(function(track) {
 				var file = track.file["mp3-v0"] || track.file["mp3-128"];
 				var itemId = album.substring(1);
-				var artId = arts[itemId];
-				tracks.push(new Track(track.artist, track.title, file, artId));
+				tracks.push(new Track(track.artist, track.title, file, itemInfos[itemId].artId, itemInfos[itemId].itemUrl));
 			});
 		}
 	}
@@ -240,8 +248,10 @@ var bcradio = (function() {
 		tracks[i].isPlayed = true;
 		markAsPlayed(i);
 		collectionListElt.val(i);
+		itemLinkElt.attr('href', tracks[i].itemUrl);
 		albumArtElt.attr('src', largeAlbumArt(tracks[i].artId));
 		songTitleElt.text(`${tracks[i].artist}: ${tracks[i].title}`)
+		songTitleElt.attr('href', tracks[i].itemUrl);
 		thumbnailElt.attr('href', smallAlbumArt(tracks[i].artId));
 		document.title = `${tracks[i].title} (${tracks[i].artist})`;
 		currentSongElt.attr('src', tracks[i].songUrl);
