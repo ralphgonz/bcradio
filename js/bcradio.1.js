@@ -255,12 +255,27 @@ var bcradio = (function() {
 		thumbnailElt.attr('href', smallAlbumArt(tracks[i].artId));
 		document.title = `${tracks[i].title} (${tracks[i].artist})`;
 		currentSongElt.attr('src', tracks[i].songUrl);
+		if ('mediaSession' in navigator) {
+			setMediaSession(i);
+		}
 		currentSongElt.trigger('load');
 		currentSongElt.trigger('play');
 		currentSongElt.one('ended', function() { 
 			playNext();
 		 });
 	}
+
+	var setMediaSession = function(i) {
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: tracks[i].title,
+			artist: tracks[i].artist,
+			artwork: [
+			  { src: largeAlbumArt(tracks[i].artId), type: 'image/jpg' },
+			]
+		});
+		navigator.mediaSession.setActionHandler('previoustrack', pub.prev);
+		navigator.mediaSession.setActionHandler('nexttrack', pub.next);
+    }
 
 	var playNext = function() {
 		findNextUnplayed();
