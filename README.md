@@ -10,7 +10,8 @@ Fill in your info:
 * Bandcamp username (this can be found in Settings > Fan > Username, and is also visible in your fan URL)
 * Number of additional (beyond the first 20) recent purchases to load
 * Optional: copy your "identity" cookie by visiting the bandcamp website in another tab and using your browser's developer tools. This allows loading all purchased tracks in your albums rather than the one representative track, and also provides mp3-V0 quality instead of the default mp3-128.
-* Press `Enter`. Party on, Garth.
+* Press `Enter` and wait for your library to load.
+* Open the player tab as a new window to explore the different layouts provided for portrait, landscape, and square aspect ratios.
 
 ## Limitations
 
