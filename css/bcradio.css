@@ -1,7 +1,9 @@
+/************* Common **************/
 body {
     font-family: arial, sans-serif;
     color: whitesmoke;
-    background-color: #555555;
+    background-color: grey;
+    margin: 0 0 0 0;
 }
 
 a {
@@ -11,7 +13,10 @@ img {
     border-width: 0;
 }
 audio {
-    width: 400px;
+    flex-grow: 1;
+}
+:focus {
+    outline:0 !important;
 }
 .text-label {
     display: inline-block;
@@ -19,50 +24,189 @@ audio {
     text-align:left;
     margin-bottom: 8px;
 }
-#controls {
-    margin-top: 4px;
-    margin-bottom: 4px;
+.playedTrack {
+    background-color: #b0b0b0;
 }
-#song-title {
-    text-decoration:none;
-    font-size: 24;
-    margin: 0 0 24 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    width: 490px;
-    outline: 0;
-    border: none;
-    -moz-outline-style: none;
-    outline-style: none;
+#params {
+    padding: 24px;
+}
+#submit-button {
+    margin-top: 10px;
+}
+#player {
+    height: 100%;
+    display:grid;
+    grid-template-columns: auto;
+    grid-template-rows: min-content 1fr;
+    grid-template-areas:
+      "art"
+      "notArt";
 }
 #item-link {
     outline: 0;
     border: none;
     -moz-outline-style: none;
     outline-style: none;
+    grid-area: art;
 }
-#help {
-    font-size: smaller;
-    margin: 4 0 0 0
+#album-art {
+    height: auto;
+    width: 100%;
 }
-#submit-button {
-    margin-top: 10px;
+#not-art {
+    height: 100%;
+    width:100%;
+    box-sizing: border-box;
+    padding: 6 6 8 6;
+    background-color: grey;
+    grid-area: notArt;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: min-content min-content min-content 1fr min-content;
+    grid-template-areas:
+    "r1"
+    "r2"
+    "r3"
+    "r4"
+    "r5";
+}
+#audio-controls {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    display: flex;
+    grid-area: r1;
+}
+#song-title {
+    text-decoration:none;
+    font-size: 24;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+    outline-style: none;
+    padding-bottom: 10px;
+    grid-area: r2;
+    max-width: 100%;
 }
 #list-title {
-    width: 490px;
+    width: 100%;
     font-size: smaller;
     margin-bottom: 2px;
+    margin-top:10px;
+    grid-area: r3;
 }
 #sort-controls {
     float:right;
     margin-top:-4px;
 }
-#album-art {
-    margin-bottom: 6px;
-    width: 490px;
-}
 #collection-list {
-    width:490px;
+    width:100%;
+    height:100%;
+    background-color:lightgray;
+    grid-area: r4;
+}
+#help {
+    font-size: smaller;
+    margin: 4 0 0 0;
+    grid-area: r5;
+}
+
+/*************** Square ****************/
+@media (min-aspect-ratio: 0.9/1) and  (max-aspect-ratio: 1.1/1) {
+    #player {
+        height: auto;
+        display:grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "art extra";
+    }
+    #player #not-art {
+        display: none;
+    }
+    #player:hover #not-art {
+        display: inline;
+    }
+    #item-link {
+        grid-area: art;
+    }
+    #album-art {
+        max-width: 100%;
+        width: auto;
+        max-height: 100vh;
+    }
+    #not-art {
+        height: auto;
+        grid-area: art;
+        align-self: end;
+        max-width: 90vw;
+        justify-self: center;
+        opacity: 0.6;
+        padding: 12px 12px 0px 12px;
+        margin-bottom: 30px;
+        display: auto;
+        width: auto;
+    }
+    #song-title {
+        text-align: center;
+    }
+    #list-title {
+        display: none;
+    }
+    #collection-list {
+        display: none;
+    }
+    #help {
+        display: none;
+    }
+}
+
+/*************** Landscape ****************/
+@media (min-aspect-ratio: 1.1/1) {
+    #player {
+        display:grid;
+        grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+          "art controls";
+    }
+    #item-link {
+        align-self:normal;
+        grid-area: art;
+        display: flex;
+        flex-direction: column;
+    }
+    #album-art {
+        object-fit:contain;
+        align-self: self-start;
+        max-width: 100%;
+        width: auto;
+        max-height: 100vh;
+    }
+    #not-art {
+        min-width:390px;
+        width: 100%;
+        grid-area: controls;
+    }
+    #audio-controls {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        display: flex;
+    }
+    #song-title {
+        width: auto;
+    }
+    #list-title {
+        width: 100%;
+        font-size: smaller;
+        margin-bottom: 2px;
+        margin-top:10px;
+    }
+    #help {
+        font-size: smaller;
+        margin: 4 0 0 0;
+    }
 }
