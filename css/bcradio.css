@@ -2,7 +2,7 @@
 body {
     font-family: arial, sans-serif;
     color: whitesmoke;
-    background-color: #555555;
+    background-color: grey;
     margin: 0 0 0 0;
 }
 
@@ -15,11 +15,36 @@ img {
 audio {
     flex-grow: 1;
 }
+:focus {
+    outline:0 !important;
+}
 .text-label {
     display: inline-block;
     width: 250px;
     text-align:left;
     margin-bottom: 8px;
+}
+.playedTrack {
+    background-color: #b0b0b0;
+}
+#submit-button {
+    margin-top: 10px;
+}
+#item-link {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+    outline-style: none;
+}
+#album-art {
+    margin-bottom: 6px;
+    height: auto;
+    width: 100%;
+}
+#not-art {
+    height: auto;
+    width:100%;
+    background-color: grey;
 }
 #audio-controls {
     margin-top: 4px;
@@ -29,7 +54,6 @@ audio {
 #song-title {
     text-decoration:none;
     font-size: 24;
-    padding-bottom: 20px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -39,57 +63,87 @@ audio {
     border: none;
     -moz-outline-style: none;
     outline-style: none;
-}
-#item-link {
-    outline: 0;
-    border: none;
-    -moz-outline-style: none;
-    outline-style: none;
-}
-#help {
-    font-size: smaller;
-    margin: 4 0 0 0
-}
-#submit-button {
-    margin-top: 10px;
+    padding-bottom: 10px;
 }
 #list-title {
     width: 100%;
     font-size: smaller;
     margin-bottom: 2px;
+    margin-top:10px;
 }
 #sort-controls {
     float:right;
     margin-top:-4px;
 }
-#album-art {
-    margin-bottom: 6px;
-    height: auto;
-    width: 100%;
-}
 #collection-list {
     width:100%;
+    background-color:lightgray
 }
-#not-art {
-    height: auto;
-    width:100%;
+#help {
+    font-size: smaller;
+    margin: 4 0 0 0
 }
 
 /*************** Square ****************/
-@media (min-aspect-ratio: 0.9/1) {
+@media (min-aspect-ratio: 0.9/1) and  (max-aspect-ratio: 1.25/1) {
+    #player {
+        display:grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "art extra";
+    }
+    #player #not-art {
+        display: none;
+    }
+    #player:hover #not-art {
+        display: inline;
+    }
+    #item-link {
+        grid-area: art;
+    }
     #album-art {
         max-width: 100%;
         width: auto;
         max-height: 100vh;
     }
+    #not-art {
+        grid-area: art;
+        align-self: end;
+        max-width: 490px;
+        justify-self: center;
+        opacity: 0.5;
+        padding: 12px 12px 0px 12px;
+        margin-bottom: 30px;
+    }
+    #song-title {
+        text-align: center;
+    }
+    #list-title {
+        display: none;
+    }
+    #collection-list {
+        display: none;
+    }
+    #help {
+        display: none;
+    }
 }
 
 /*************** Landscape ****************/
 @media (min-aspect-ratio: 1.25/1) {
-    #not-art {
-        min-width:490px;
-        width: 100%;
-        grid-area: controls;
+    #player {
+        height: 100%;
+        display:grid;
+        grid-template-columns: minmax(0, max-content) minmax(400px, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+          "art controls";
+    }
+    #item-link {
+        align-self:normal;
+        /* flex-basis:-moz-available; */
+        grid-area: art;
         display: flex;
         flex-direction: column;
     }
@@ -102,25 +156,44 @@ audio {
         width: auto;
         max-height: 100vh;
     }
-    #player {
-        height: 100%;
-        display:grid;
-        grid-template-columns: minmax(0, max-content) minmax(490px, 1fr);
-        grid-template-rows: auto;
+    #not-art {
+        min-width:400px;
+        width: 100%;
+        grid-area: controls;
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: min-content min-content min-content 1fr min-content;
         grid-template-areas:
-          "art controls";
+        "r1"
+        "r2"
+        "r3"
+        "r4"
+        "r5";
+    }
+    #audio-controls {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        display: flex;
+        grid-area: r1;
     }
     #song-title {
         width: auto;
+        grid-area: r2;
     }
-    #item-link {
-        align-self:normal;
-        /* flex-basis:-moz-available; */
-        grid-area: art;
-        display: flex;
-        flex-direction: column;
+    #list-title {
+        width: 100%;
+        font-size: smaller;
+        margin-bottom: 2px;
+        margin-top:10px;
+        grid-area: r3;
     }
     #collection-list {
         height: 100%;
+        grid-area: r4;
+    }
+    #help {
+        font-size: smaller;
+        margin: 4 0 0 0;
+        grid-area: r5;
     }
 }

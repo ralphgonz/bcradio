@@ -129,7 +129,11 @@ var bcradio = (function() {
 	}
 
 	var markAsPlayed = function(i) {
-		$(`#collection-list option[value=${i}]`).attr('style', tracks[i].isPlayed ? 'background-color:lightgrey' : '');
+		if (tracks[i].isPlayed) {
+			$(`#collection-list option[value=${i}]`).addClass("playedTrack");
+		} else {
+			$(`#collection-list option[value=${i}]`).removeClass("playedTrack");
+		}
 	}
 
 	var reportBadUsername = function() {
