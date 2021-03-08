@@ -37,6 +37,7 @@ var bcradio = (function() {
 		itemLinkElt = $('#item-link');
 		collectionListElt = $("#collection-list");
 
+		setViewport();
 		collectionListElt.on('change', function(){
 			current = $(this).val();
 			pub.next();
@@ -111,6 +112,16 @@ var bcradio = (function() {
 	function ItemInfo(artId, itemUrl) {
 		this.artId = artId;
 		this.itemUrl = itemUrl;
+	}
+
+	// Guard against redirect swallowing meta tags
+	var setViewport = function() {
+		var viewportMetaElt = $('meta[name=viewport]');
+		if (!viewportMetaElt || !viewportMetaElt.length) {
+			$('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">');
+		} else {
+			viewportMetaElt.attr('content', "width=device-width, initial-scale=0.9, maximum-scale=0.9");
+		}
 	}
 
 	var findNextUnplayed = function() {
