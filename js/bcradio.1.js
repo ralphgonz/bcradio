@@ -18,6 +18,7 @@ var bcradio = (function() {
 	var identityCookieElt;
 	var thumbnailElt;
 	var itemLinkElt;
+	var viewportMetaElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -36,6 +37,9 @@ var bcradio = (function() {
 		thumbnailElt = $('#thumbnail');
 		itemLinkElt = $('#item-link');
 		collectionListElt = $("#collection-list");
+		viewportMetaElt = $("viewport-meta");
+
+		setViewport();
 		collectionListElt.on('change', function(){
 			current = $(this).val();
 			pub.next();
@@ -110,6 +114,13 @@ var bcradio = (function() {
 	function ItemInfo(artId, itemUrl) {
 		this.artId = artId;
 		this.itemUrl = itemUrl;
+	}
+
+	// Guard against redirect swallowing meta tags
+	var setViewport = function() {
+		if (!viewportMetaElt) {
+			$('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">');
+		}
 	}
 
 	var findNextUnplayed = function() {
