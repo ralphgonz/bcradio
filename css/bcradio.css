@@ -14,6 +14,7 @@ img {
 }
 audio {
     flex-grow: 1;
+    height: 40px;
 }
 :focus {
     outline:0 !important;
@@ -155,6 +156,7 @@ audio {
     }
     #song-title {
         text-align: center;
+        margin-top: 8px;
     }
     #list-title {
         display: none;
