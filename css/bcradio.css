@@ -27,6 +27,9 @@ audio {
 .playedTrack {
     background-color: #b0b0b0;
 }
+.prev-next {
+    align-self: center;
+}
 #params {
     padding: 6px;
 }
@@ -89,7 +92,7 @@ audio {
     outline-style: none;
     padding-bottom: 10px;
     grid-area: r2;
-    max-width: 100%;
+    width: 100%;
 }
 #list-title {
     width: 100%;
@@ -115,7 +118,7 @@ audio {
 }
 
 /*************** Square ****************/
-@media (min-aspect-ratio: 0.9/1) and  (max-aspect-ratio: 1.1/1) {
+@media (min-aspect-ratio: 9/10) and  (max-aspect-ratio: 11/10) {
     #player {
         height: auto;
         display:grid;
@@ -165,7 +168,7 @@ audio {
 }
 
 /*************** Landscape ****************/
-@media (min-aspect-ratio: 1.1/1) {
+@media (min-aspect-ratio: 11/10) {
     #player {
         display:grid;
         grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
@@ -195,9 +198,6 @@ audio {
         margin-top: 4px;
         margin-bottom: 4px;
         display: flex;
-    }
-    #song-title {
-        width: auto;
     }
     #list-title {
         width: 100%;
