@@ -118,7 +118,7 @@ var bcradio = (function() {
 
 	// Guard against redirect swallowing meta tags
 	var setViewport = function() {
-		if (!viewportMetaElt) {
+		if (!viewportMetaElt.length) {
 			$('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">');
 		}
 	}
