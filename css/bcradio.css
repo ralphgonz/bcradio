@@ -33,7 +33,7 @@ audio {
     align-self: center;
 }
 .help {
-    font-size: small;
+    font-size: x-small;
     margin: 4 0 0 0;
     grid-area: r5;
 }
@@ -206,7 +206,7 @@ audio {
 }
 
 /*************** Landscape Mobile ****************/
-@media (min-aspect-ratio: 11/10) and (hover: none) and (pointer: coarse) {
+@media (hover: none) and (pointer: coarse) {
     #collection-list {
         height: max-content;
     }
