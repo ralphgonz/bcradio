@@ -116,12 +116,14 @@ var bcradio = (function() {
 
 	// Guard against redirect swallowing meta tags
 	var setViewport = function() {
-		var viewportMetaElt = $('meta[name=viewport]');
-		if (!viewportMetaElt || !viewportMetaElt.length) {
-			$('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">');
-		} else {
-			viewportMetaElt.attr('content', "width=device-width, initial-scale=0.9, maximum-scale=0.9");
-		}
+		var t = document.createElement('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />');
+		document.getElementsByTagName('head')[0].appendChild(t);
+		// var viewportMetaElt = $('meta[name=viewport]');
+		// if (!viewportMetaElt || !viewportMetaElt.length) {
+		// 	$('head').append($('<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />'));
+		// } else {
+		// 	viewportMetaElt.attr('content', "width=device-width, initial-scale=0.9, maximum-scale=0.9");
+		// }
 	}
 
 	var findNextUnplayed = function() {

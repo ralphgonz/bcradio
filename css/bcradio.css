@@ -216,6 +216,6 @@ audio {
 /*************** Landscape Mobile ****************/
 @media (min-aspect-ratio: 11/10) and (hover: none) and (pointer: coarse) {
     #collection-list {
-        height:auto;
+        height: max-content;
     }
 }
