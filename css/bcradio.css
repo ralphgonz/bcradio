@@ -99,10 +99,16 @@ audio {
 }
 #list-title {
     width: 100%;
-    font-size: smaller;
+    font-size: small;
     margin-bottom: 2px;
     margin-top:10px;
     grid-area: r3;
+}
+#collection-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 #sort-controls {
     float:right;
@@ -115,7 +121,7 @@ audio {
     grid-area: r4;
 }
 #help {
-    font-size: smaller;
+    font-size: small;
     margin: 4 0 0 0;
     grid-area: r5;
 }
@@ -197,25 +203,16 @@ audio {
         width: 100%;
         grid-area: controls;
     }
-    #audio-controls {
-        margin-top: 4px;
-        margin-bottom: 4px;
-        display: flex;
-    }
-    #list-title {
-        width: 100%;
-        font-size: smaller;
-        margin-bottom: 2px;
-        margin-top:10px;
-    }
-    #help {
-        font-size: smaller;
-        margin: 4 0 0 0;
-    }
 }
 
 /*************** Landscape Mobile ****************/
 @media (min-aspect-ratio: 11/10) and (hover: none) and (pointer: coarse) {
+    #player {
+        grid-template-columns: minmax(0, max-content) minmax(270px, 1fr);
+    }
+    #not-art {
+        min-width:270px;
+    }
     #collection-list {
         height: max-content;
     }
