@@ -32,16 +32,14 @@ audio {
 .prev-next {
     align-self: center;
 }
-.help {
-    font-size: x-small;
-    margin: 4 0 0 0;
-    grid-area: r5;
-}
 #params {
     padding: 6px;
 }
 #submit-button {
     margin-top: 10px;
+}
+#help1 {
+    font-size: small;
 }
 #player {
     height: 100%;
@@ -125,6 +123,11 @@ audio {
     background-color:#d0e0f0;
     grid-area: r4;
 }
+#help2 {
+    font-size: small;
+    margin: 4 0 0 0;
+    grid-area: r5;
+}
 
 /*************** Square ****************/
 @media (min-aspect-ratio: 9/10) and  (max-aspect-ratio: 11/10) {
@@ -172,7 +175,7 @@ audio {
     #collection-list {
         display: none;
     }
-    .help {
+    #help2 {
         display: none;
     }
 }
