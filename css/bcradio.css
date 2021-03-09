@@ -32,6 +32,11 @@ audio {
 .prev-next {
     align-self: center;
 }
+.help {
+    font-size: small;
+    margin: 4 0 0 0;
+    grid-area: r5;
+}
 #params {
     padding: 6px;
 }
@@ -120,11 +125,6 @@ audio {
     background-color:#d0e0f0;
     grid-area: r4;
 }
-#help {
-    font-size: small;
-    margin: 4 0 0 0;
-    grid-area: r5;
-}
 
 /*************** Square ****************/
 @media (min-aspect-ratio: 9/10) and  (max-aspect-ratio: 11/10) {
@@ -172,7 +172,7 @@ audio {
     #collection-list {
         display: none;
     }
-    #help {
+    .help {
         display: none;
     }
 }
@@ -207,12 +207,6 @@ audio {
 
 /*************** Landscape Mobile ****************/
 @media (min-aspect-ratio: 11/10) and (hover: none) and (pointer: coarse) {
-    #player {
-        grid-template-columns: minmax(0, max-content) minmax(270px, 1fr);
-    }
-    #not-art {
-        min-width:270px;
-    }
     #collection-list {
         height: max-content;
     }
