@@ -1,11 +1,13 @@
 /************* Common **************/
+html {
+    -webkit-text-size-adjust: none;
+}
 body {
     font-family: arial, sans-serif;
     color: whitesmoke;
     background-color: grey;
     margin: 0 0 0 0;
 }
-
 a {
     color: whitesmoke;
 }
