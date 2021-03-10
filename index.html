@@ -22,6 +22,16 @@
             <div><label class="text-label" for="user-name">Bandcamp username:</label><input id="user-name" type="text" autofocus /><br/></div>
             <div><label class="text-label" for="history">Load additional purchases:</label><input id="history" type="number" value=200 /><br/></div>
             <div><label class="text-label" for="identity-cookie">(Optional) "identity" cookie:</label><input id="identity-cookie" type="text" /><br/></div>
+            <div id="window-type">
+                <input type="radio" id="window-same" name="windowType" value="same" checked="checked" />
+                <label class="window-type-label" for="window-same">Reuse Tab</label>
+                <input type="radio" id="window-vertical" name="windowType" value="vertical" />
+                <label class="window-type-label" for="window-vertical">Vertical</label>
+                <input type="radio" id="window-album" name="windowType" value="album" />
+                <label class="window-type-label" for="window-album">Album Art</label>
+                <input type="radio" id="window-mini" name="windowType" value="mini" />
+                <label class="window-type-label" for="window-mini">Mini Player</label>
+            </div>
             <div><input id="submit-button" type="submit" name="submit" value="Get Started"/></div>
         </form>
         <p id="help1">Bandcamp Collection Player. <a href="https://github.com/ralphgonz/bcradio" target="_blank">Help & source</a></p>
@@ -44,11 +54,10 @@
                 <div id="sort-controls">
                     <input type="radio" id="radio-shuffle" name="sequencing" value="shuffle" checked="checked" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-shuffle">Shuffle</label>
                     <input type="radio" id="radio-alphabetic" name="sequencing" value="alphabetic" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-alphabetic">Alphabetic</label>
-                    <!-- <input type="radio" id="radio-most-recent" name="sequencing" value="most-recent" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-most-recent">Most Recent</label> -->
                 </div>
             </div>
 
-            <select id="collection-list" name="collection" size=5></select>
+            <select id="collection-list" name="collection" size=3></select>
             <p id="help2">Bandcamp Collection Player. <a href="https://github.com/ralphgonz/bcradio" target="_blank">Help & source</a></p>
         </div>
     </div>

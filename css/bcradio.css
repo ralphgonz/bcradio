@@ -210,7 +210,20 @@ audio {
     }
 }
 
-/*************** Landscape Mobile ****************/
+/*************** Mini player ****************/
+@media (min-aspect-ratio: 11/10) and (max-height: 220px) {
+    #list-title {
+        display: none;
+    }
+    #collection-list {
+        display: none;
+    }
+    #help2 {
+        display: none;
+    }
+}
+
+/*************** Mobile ****************/
 @media (hover: none) and (pointer: coarse) {
     #collection-list {
         height: max-content;

@@ -3,19 +3,21 @@
 
 var bcradio = (function() {
 
+	var userName;
+	var numberToLoad;
+	var identityCookie;
+
 	var tracks = [];
 	var itemInfos = {};
 	var current = 0;
+
 	var albumArtElt;
 	var currentSongElt;
 	var collectionTitleElt;
-	var userNameElt;
-	var historyElt;
 	var songTitleElt;
 	var paramsElt;
 	var playerElt;
 	var collectionListElt;
-	var identityCookieElt;
 	var thumbnailElt;
 	var itemLinkElt;
 
@@ -26,35 +28,65 @@ var bcradio = (function() {
 		albumArtElt = $('#album-art');
 		currentSongElt = $('#current-song');
 		collectionTitleElt = $('#collection-title');
-		userNameElt = $('#user-name');
-		historyElt = $('#history');
 		songTitleElt = $('#song-title');
 		paramsElt = $('#params');
 		playerElt = $('#player');
 		paramsFormElt = $('#params-form');
-		identityCookieElt = $('#identity-cookie');
 		thumbnailElt = $('#thumbnail');
 		itemLinkElt = $('#item-link');
 		collectionListElt = $("#collection-list");
 
-		collectionListElt.on('change', function(){
-			current = $(this).val();
-			pub.next();
-		});
+		var searchParams = new URLSearchParams(window.location.search);
+		if (searchParams.has('username')) {
+			userName = searchParams.get('username');
+			numberToLoad = searchParams.get('history');
+			identityCookie = searchParams.get('identity');
+			pub.start();
+			return;
+		}
+
 		paramsFormElt.submit(function (evt){
 			evt.preventDefault();
-			pub.start();
+
+			userName = $('#user-name').val();
+			numberToLoad = $('#history').val();
+			identityCookie = $('#identity-cookie').val();
+			if (!userName) {
+				reportBadUsername();
+				return;
+			}
+			var popupParams = 'menubar=no,toolbar=no,location=no,status=no,';
+			var width;
+			var height;
+			switch($('input[name=windowType]:checked').val()) {
+				case 'vertical':
+					width = 420;
+					height = 800;
+					break;
+				case 'album':
+					width = 800;
+					height = 856;
+					break;
+				case 'mini':
+					width = 520;
+					height = 180;
+					break;
+				default: // same tab
+					pub.start();
+					return;
+			}
+		
+			var popup = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${identityCookie}`,
+				'bcradio',
+				`menubar=no,toolbar=no,location=no,status=no,left=100,top=100,width=${width},height=${height}`);
+			popup.resizeTo(width, height);
 		});
 	};
 
 	pub.start = function() {
-		if (!userNameElt.val()) {
-			reportBadUsername();
-			return;
-		}
-		var userNameRequest = `/${userNameElt.val()}`;
-		if ($(identityCookieElt).val()) {
-			userNameRequest = `${userNameRequest}?identity-cookie=${$(identityCookieElt).val()}`;
+		var userNameRequest = `/${userName}`;
+		if (identityCookie) {
+			userNameRequest = `${userNameRequest}?identity-cookie=${identityCookie}`;
 		}
 		$.get(userNameRequest, loadInitialData)
 		.fail(function() {
@@ -138,7 +170,7 @@ var bcradio = (function() {
 	}
 
 	var reportBadUsername = function() {
-		alert(`No data found for username ${userNameElt.val()}`)
+		alert(`No data found for username ${userName}`)
 	}
 
 	var loadInitialData = function(data) {
@@ -152,7 +184,7 @@ var bcradio = (function() {
 			// Load initial page of tracks
 			fanName = dataBlobJson.fan_data.name;
 			var cookieStatus = "";
-			if ($(identityCookieElt).val()) {
+			if (identityCookie) {
 				if (dataBlobJson.identities.fan) {
 					cookieStatus = " (cookied)";
 				} else {
@@ -170,12 +202,11 @@ var bcradio = (function() {
 		}
 
 		// Query for remaining numberToLoad tracks
-		var numberToLoad = historyElt.val();
 		var fanId = dataBlobJson.fan_data.fan_id;
 		var lastToken = dataBlobJson.collection_data.last_token;
 		var moreDataRequest = `?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
-		if ($(identityCookieElt).val()) {
-			moreDataRequest = `${moreDataRequest}&identity-cookie=${$(identityCookieElt).val()}`;
+		if (identityCookie) {
+			moreDataRequest = `${moreDataRequest}&identity-cookie=${identityCookie}`;
 		}
 		$.get(moreDataRequest, loadMoreData)
 		.fail(function() {
@@ -207,6 +238,10 @@ var bcradio = (function() {
 	}
 
 	var startPlaying = function() {
+		collectionListElt.on('change', function(){
+			current = $(this).val();
+			pub.next();
+		});
 		paramsElt.hide();
 		playerElt.show();
 		pub.resequence();
