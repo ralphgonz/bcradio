@@ -246,6 +246,9 @@ audio {
 
 /*************** Mobile ****************/
 @media (hover: none) and (pointer: coarse) {
+  #window-type {
+    display: none;
+  }
   #collection-list {
     height: max-content;
   }
