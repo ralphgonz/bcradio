@@ -44,7 +44,7 @@ var bcradio = (function() {
 			pub.start();
 			return;
 		}
-
+		
 		paramsFormElt.submit(function (evt){
 			evt.preventDefault();
 
@@ -68,8 +68,8 @@ var bcradio = (function() {
 					height = 856;
 					break;
 				case 'mini':
-					width = 520;
-					height = 180;
+					width = 500;
+					height = 165;
 					break;
 				default: // same tab
 					pub.start();
@@ -84,6 +84,7 @@ var bcradio = (function() {
 	};
 
 	pub.start = function() {
+		$('#loading').show();
 		var userNameRequest = `/${userName}`;
 		if (identityCookie) {
 			userNameRequest = `${userNameRequest}?identity-cookie=${identityCookie}`;
@@ -170,6 +171,7 @@ var bcradio = (function() {
 	}
 
 	var reportBadUsername = function() {
+		$('#loading').hide();
 		alert(`No data found for username ${userName}`)
 	}
 
@@ -210,6 +212,7 @@ var bcradio = (function() {
 		}
 		$.get(moreDataRequest, loadMoreData)
 		.fail(function() {
+			$('#loading').hide();
 			alert(`Failed attempting to retrieve ${numberToLoad} additional elements`);
 		});
 	}
@@ -245,6 +248,7 @@ var bcradio = (function() {
 		paramsElt.hide();
 		playerElt.show();
 		pub.resequence();
+		$('#loading').hide();
 		playNext();
 	}
 

@@ -1,80 +1,104 @@
+/************* Loading **************/
+#loading {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: none;
+  opacity: 1.0;
+  background-color: white;
+  z-index: 99;
+  text-align: center;
+}
+#loading-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: -webkit-translate(-50%, -50%);
+  transform: -moz-translate(-50%, -50%);
+  transform: -ms-translate(-50%, -50%);
+  z-index: 100;
+}
+
 /************* Common **************/
 html {
-    -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 body {
-    font-family: arial, sans-serif;
-    color: whitesmoke;
-    background-color: grey;
-    margin: 0 0 0 0;
+  font-family: arial, sans-serif;
+  color: whitesmoke;
+  background-color: grey;
+  margin: 0 0 0 0;
 }
 a {
-    color: whitesmoke;
+  color: whitesmoke;
 }
 img {
-    border-width: 0;
+  border-width: 0;
 }
 audio {
-    flex-grow: 1;
-    height: 40px;
-    align-self: center;
+  flex-grow: 1;
+  height: 40px;
+  align-self: center;
 }
 :focus {
-    outline:0 !important;
+  outline: 0 !important;
 }
 .text-label {
-    display: inline-block;
-    width: 250px;
-    text-align:left;
-    margin-bottom: 8px;
+  display: inline-block;
+  width: 250px;
+  text-align: left;
+  margin-bottom: 8px;
 }
 .playedTrack {
-    background-color: #b0b0b0;
+  background-color: #b0b0b0;
 }
 .prev-next {
-    align-self: center;
+  align-self: center;
 }
 #params {
-    padding: 6px;
+  padding: 6px;
 }
 #submit-button {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 #help1 {
-    font-size: small;
+  font-size: small;
 }
 #player {
-    height: 100%;
-    display:grid;
-    grid-template-columns: auto;
-    grid-template-rows: min-content 1fr;
-    grid-template-areas:
-      "art"
-      "notArt";
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    "art"
+    "notArt";
 }
 #item-link {
-    outline: 0;
-    border: none;
-    -moz-outline-style: none;
-    outline-style: none;
-    grid-area: art;
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+  outline-style: none;
+  grid-area: art;
 }
 #album-art {
-    height: 100vw;
-    width: 100vw;
-    object-fit:cover;
+  height: 100vw;
+  width: 100vw;
+  object-fit: cover;
 }
 #not-art {
-    height: 100%;
-    width:100%;
-    box-sizing: border-box;
-    padding: 6 6 8 6;
-    background-color: grey;
-    grid-area: notArt;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: min-content min-content min-content 1fr min-content;
-    grid-template-areas:
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6 6 8 6;
+  background-color: grey;
+  grid-area: notArt;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: min-content min-content min-content 1fr min-content;
+  grid-template-areas:
     "r1"
     "r2"
     "r3"
@@ -82,150 +106,147 @@ audio {
     "r5";
 }
 #audio-controls {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    display: flex;
-    grid-area: r1;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  grid-area: r1;
 }
 #song-title {
-    text-decoration:none;
-    font-size: 24;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    outline: 0;
-    border: none;
-    -moz-outline-style: none;
-    outline-style: none;
-    padding-bottom: 10px;
-    grid-area: r2;
-    width: 100%;
+  text-decoration: none;
+  font-size: 24;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+  outline-style: none;
+  grid-area: r2;
+  width: 100%;
 }
 #list-title {
-    width: 100%;
-    font-size: small;
-    margin-bottom: 2px;
-    margin-top:10px;
-    grid-area: r3;
+  width: 100%;
+  font-size: small;
+  margin-bottom: 2px;
+  margin-top: 15px;
+  grid-area: r3;
 }
 #collection-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
 }
 #sort-controls {
-    float:right;
-    margin-top:-4px;
+  float: right;
+  margin-top: -4px;
 }
 #collection-list {
-    width:100%;
-    height:100%;
-    background-color:#d0e0f0;
-    grid-area: r4;
+  width: 100%;
+  height: 100%;
+  background-color: #d0e0f0;
+  grid-area: r4;
 }
 #help2 {
-    font-size: small;
-    margin: 4 0 0 0;
-    grid-area: r5;
+  font-size: small;
+  margin: 4 0 0 0;
+  grid-area: r5;
 }
 
 /*************** Square ****************/
-@media (min-aspect-ratio: 9/10) and  (max-aspect-ratio: 11/10) {
-    #player {
-        height: auto;
-        display:grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto;
-        grid-template-areas:
-          "art extra";
-    }
-    #player #not-art {
-        display: none;
-    }
-    #player:hover #not-art {
-        display: inline;
-    }
-    #item-link {
-        grid-area: art;
-    }
-    #album-art {
-        max-width: 100%;
-        width: 100vh;
-        max-height: 100vh;
-    }
-    #not-art {
-        height: auto;
-        grid-area: art;
-        align-self: end;
-        max-width: 90vw;
-        justify-self: center;
-        opacity: 0.6;
-        padding: 12px 12px 0px 12px;
-        margin-bottom: 30px;
-        display: auto;
-        width: auto;
-    }
-    #song-title {
-        text-align: center;
-        margin-top: 8px;
-    }
-    #list-title {
-        display: none;
-    }
-    #collection-list {
-        display: none;
-    }
-    #help2 {
-        display: none;
-    }
+@media (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10) {
+  #player {
+    height: auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "art extra";
+  }
+  #player #not-art {
+    display: none;
+  }
+  #player:hover #not-art {
+    display: inline;
+  }
+  #item-link {
+    grid-area: art;
+  }
+  #album-art {
+    max-width: 100%;
+    width: 100vh;
+    max-height: 100vh;
+  }
+  #not-art {
+    height: auto;
+    grid-area: art;
+    align-self: end;
+    max-width: 90vw;
+    justify-self: center;
+    opacity: 0.6;
+    padding: 12px 12px 0px 12px;
+    margin-bottom: 30px;
+    display: auto;
+    width: auto;
+  }
+  #song-title {
+    text-align: center;
+    margin-top: 8px;
+  }
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
 }
 
 /*************** Landscape ****************/
 @media (min-aspect-ratio: 11/10) {
-    #player {
-        display:grid;
-        grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
-        grid-template-rows: auto;
-        grid-template-areas:
-          "art controls";
-    }
-    #item-link {
-        align-self:normal;
-        grid-area: art;
-        display: flex;
-        flex-direction: column;
-    }
-    #album-art {
-        align-self: self-start;
-        max-width: 100%;
-        width: 100vh;
-        max-height: 100vh;
-    }
-    #not-art {
-        min-width:390px;
-        width: 100%;
-        grid-area: controls;
-    }
+  #player {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "art controls";
+  }
+  #item-link {
+    align-self: normal;
+    grid-area: art;
+    display: flex;
+    flex-direction: column;
+  }
+  #album-art {
+    align-self: self-start;
+    max-width: 100%;
+    width: 100vh;
+    max-height: 100vh;
+  }
+  #not-art {
+    min-width: 390px;
+    width: 100%;
+    grid-area: controls;
+  }
 }
 
 /*************** Mini player ****************/
 @media (min-aspect-ratio: 11/10) and (max-height: 220px) {
-    #list-title {
-        display: none;
-    }
-    #collection-list {
-        display: none;
-    }
-    #help2 {
-        display: none;
-    }
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
 }
 
 /*************** Mobile ****************/
 @media (hover: none) and (pointer: coarse) {
-    #collection-list {
-        height: max-content;
-    }
+  #collection-list {
+    height: max-content;
+  }
 }
