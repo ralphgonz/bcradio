@@ -50,7 +50,7 @@ var bcradio = (function() {
 
 			userName = $('#user-name').val();
 			numberToLoad = $('#history').val();
-			identityCookie = $('#identity-cookie').val();
+			identityCookie = maybeUriEncode($('#identity-cookie').val());
 			if (!userName) {
 				reportBadUsername();
 				return;
@@ -144,6 +144,13 @@ var bcradio = (function() {
 	function ItemInfo(artId, itemUrl) {
 		this.artId = artId;
 		this.itemUrl = itemUrl;
+	}
+
+	var maybeUriEncode = function(s) {
+		if (!s) { return s; }
+		var decoded = decodeURIComponent(s);
+		if (decoded != s) { return s; }
+		return encodeURIComponent(s);
 	}
 
 	var findNextUnplayed = function() {
