@@ -154,6 +154,19 @@ audio {
   grid-area: r5;
 }
 
+/*************** Short ****************/
+@media (min-aspect-ratio: 8/10) and (max-aspect-ratio: 9/10) {
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
+}
+
 /*************** Square ****************/
 @media (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10) {
   #player {
