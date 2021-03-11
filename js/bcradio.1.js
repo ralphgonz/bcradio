@@ -40,7 +40,7 @@ var bcradio = (function() {
 		if (searchParams.has('username')) {
 			userName = searchParams.get('username');
 			numberToLoad = searchParams.get('history');
-			identityCookie = searchParams.get('identity');
+			identityCookie = maybeUriEncode(searchParams.get('identity'));
 			pub.start();
 			return;
 		}
