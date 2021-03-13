@@ -68,7 +68,7 @@ var bcradio = (function() {
 					height = 856;
 					break;
 				case 'mini':
-					width = 500;
+					width = 420;
 					height = 165;
 					break;
 				default: // same tab
