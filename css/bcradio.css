@@ -168,19 +168,16 @@ audio {
 }
 
 /*************** Square ****************/
-@media (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10) {
+@media (display-mode: fullscreen), (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10)  {
+  body {
+    background-color: black;
+  }
   #player {
     height: auto;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto 1fr;
     grid-template-rows: auto;
-    grid-template-areas: "art extra";
-  }
-  #player #not-art {
-    display: none;
-  }
-  #player:hover #not-art {
-    display: inline;
+    grid-template-areas: "left art right";
   }
   #item-link {
     grid-area: art;
@@ -189,6 +186,12 @@ audio {
     max-width: 100%;
     width: 100vh;
     max-height: 100vh;
+  }
+  #item-link + #not-art {
+    display: none;
+  }
+  #item-link:hover + #not-art {
+    display: inline;
   }
   #not-art {
     height: auto;
@@ -219,7 +222,7 @@ audio {
 }
 
 /*************** Landscape ****************/
-@media (min-aspect-ratio: 11/10) {
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) {
   #player {
     display: grid;
     grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
