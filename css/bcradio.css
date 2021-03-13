@@ -41,7 +41,7 @@ img {
 audio {
   flex-grow: 1;
   height: 36px;
-  width: max(40px,25vw);
+  width: max(50px,25vw);
   align-self: center;
 }
 :focus {
