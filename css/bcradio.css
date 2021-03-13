@@ -279,7 +279,7 @@ audio {
 }
 
 /*************** Mobile ****************/
-@media (hover: none) {
+@media (pointer: coarse) {
   #window-type {
     display: none;
   }
