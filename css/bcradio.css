@@ -133,6 +133,7 @@ audio {
   outline-style: none;
   grid-area: r2;
   width: 100%;
+  text-align: center;
 }
 #list-title {
   width: 100%;
@@ -223,7 +224,6 @@ audio {
     width: auto;
   }
   #song-title {
-    text-align: center;
     margin-top: 8px;
     margin-bottom: 12px;
   }
@@ -274,6 +274,13 @@ audio {
     display: none;
   }
   #help2 {
+    display: none;
+  }
+}
+
+/*************** No art ****************/
+@media (min-aspect-ratio: 11/10) and (max-width: 420px) {
+  #item-link {
     display: none;
   }
 }
