@@ -142,15 +142,22 @@ audio {
   margin-bottom: 2px;
   margin-top: 15px;
   grid-area: r3;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "collector sorts";
 }
 #collection-title {
+  grid-area: collector;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
 }
 #sort-controls {
-  float: right;
+  grid-area: sorts;
+  justify-self: end;
   margin-top: -4px;
 }
 #collection-list {
