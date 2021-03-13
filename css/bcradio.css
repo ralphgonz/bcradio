@@ -226,6 +226,7 @@ audio {
     margin-bottom: 30px;
     display: auto;
     width: auto;
+    border-radius: 12px;
   }
   #song-title {
     margin-top: 8px;
