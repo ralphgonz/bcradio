@@ -4,8 +4,6 @@ _Tiny web app to shuffle-play your Bandcamp collection or to check out your frie
 
 [On the air live.](http://bcradio.muskratworks.com)
 
-[Fork using Knockout.js](https://github.com/ralphgonz/bcradio-ko)
-
 ## Usage
 
 Fill in your info:
