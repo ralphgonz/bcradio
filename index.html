@@ -1,0 +1,76 @@
+<html>
+
+<head>
+  <title>Bandcamp Radio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <link href="css/bcradio.css" rel="stylesheet" type="text/css">
+  <link data-bind="attr: { href: thumbnail }" id="thumbnail" rel="icon" type="image/jpg" href="images/scope-tiny.gif">
+  <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="js/knockout-3.5.1.js"></script>
+  <script type="text/javascript" src="js/bcradio.1.1.0.js"></script>
+  <script type="text/javascript">
+  	window.onload = function() {
+	  	bcradio.init();
+    }
+  </script>
+</head>
+
+<body>
+    <div data-bind="visible: showLoading" id="loading">
+        <img id="loading-image" src="images/loading.gif" alt="Loading..." />
+    </div>
+      
+    <div data-bind="visible: showParams" id="params">
+        <form data-bind="submit: bcradio.submitParams" id="params-form" name="params-form">
+            <div><label class="text-label" for="user-name">Bandcamp username:</label>
+                <input data-bind="value: userName" id="user-name" type="text" autofocus /><br/></div>
+            <div><label class="text-label" for="history">Load additional purchases:</label>
+                <input data-bind="value: numberToLoad" id="history" type="number" value=200 /><br/></div>
+            <div><label class="text-label" for="identity-cookie">(Optional) "identity" cookie:</label>
+                <input data-bind="value: identityCookie" id="identity-cookie" type="text" /><br/></div>
+            <div id="window-type">
+                <input type="radio" data-bind="checked: windowType" id="window-same" name="windowType" value="same" checked="checked" />
+                <label class="window-type-label" for="window-same">Reuse Tab</label>
+                <input type="radio" data-bind="checked: windowType" id="window-vertical" name="windowType" value="vertical" />
+                <label class="window-type-label" for="window-vertical">Vertical</label>
+                <input type="radio" data-bind="checked: windowType" id="window-album" name="windowType" value="album" />
+                <label class="window-type-label" for="window-album">Album Art</label>
+                <input type="radio" data-bind="checked: windowType" id="window-mini" name="windowType" value="mini" />
+                <label class="window-type-label" for="window-mini">Mini Player</label>
+            </div>
+            <div><input id="submit-button" type="submit" name="submit" value="Get Started"/></div>
+        </form>
+        <p id="help1">Bandcamp Collection Player. <a href="https://github.com/ralphgonz/bcradio" target="_blank">Help & source</a></p>
+    </div>
+
+    <div data-bind="visible: showPlayer" id="player-container" style="display:none">
+        <div id="player">
+            <a data-bind="attr: { href: songPage }" id="item-link" href="" target="_blank"><img data-bind="attr: { src: albumArt }" src="" id="album-art" /></a>
+
+            <div id="not-art">
+                <div id="audio-controls">
+                    <img class="prev-next" src="images/prev-outline.png" alt="prev" width=40 height=40 onclick="bcradio.prev();" />
+                    <audio id="current-song" controls preload="none" src=""></audio>
+                    <img class="prev-next" src="images/next-outline.png" alt="next" width=40 height=40 onclick="bcradio.next();" />
+                </div>
+
+                <a href="" data-bind="text: songTitle, attr: { href: songPage }" id="song-title" target="_blank"></a>
+
+                <div id="list-title">
+                    <span data-bind="text: collectionTitle" id="collection-title"></span>
+                    <div id="sort-controls">
+                        <input type="radio" id="radio-shuffle" name="sequencing" value="shuffle" checked="checked" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-shuffle">Shuffle</label>
+                        <input type="radio" id="radio-alphabetic" name="sequencing" value="alphabetic" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-alphabetic">Alphabetic</label>
+                    </div>
+                </div>
+
+                <select id="collection-list" name="collection" size=3></select>
+                <p id="help2">Bandcamp Collection Player. <a href="https://github.com/ralphgonz/bcradio" target="_blank">Help & source</a></p>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+</html>

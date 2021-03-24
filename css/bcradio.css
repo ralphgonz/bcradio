@@ -1,0 +1,322 @@
+/************* Loading **************/
+#loading {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  opacity: 1.0;
+  background-color: white;
+  z-index: 99;
+  text-align: center;
+}
+#loading-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: -webkit-translate(-50%, -50%);
+  transform: -moz-translate(-50%, -50%);
+  transform: -ms-translate(-50%, -50%);
+  z-index: 100;
+}
+
+/************* Common **************/
+html {
+  -webkit-text-size-adjust: none;
+}
+body {
+  font-family: arial, sans-serif;
+  color: whitesmoke;
+  background-color: grey;
+  margin: 0 0 0 0;
+}
+a {
+  color: whitesmoke;
+}
+img {
+  border-width: 0;
+}
+audio {
+  flex-grow: 1;
+  height: 36px;
+  width: max(50px,25vw);
+  align-self: center;
+}
+:focus {
+  outline: 0 !important;
+}
+.text-label {
+  display: inline-block;
+  width: 250px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+.playedTrack {
+  background-color: #b0b0b0;
+}
+.prev-next {
+  align-self: center;
+}
+#params {
+  padding: 6px;
+}
+#submit-button {
+  margin-top: 10px;
+}
+#help1 {
+  font-size: small;
+}
+#player-container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "player";
+}
+#player {
+  height: 100%;
+  grid-area: "player";
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    "art"
+    "notArt";
+}
+#item-link {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+  outline-style: none;
+  grid-area: art;
+}
+#album-art {
+  height: 100vw;
+  width: 100vw;
+  object-fit: cover;
+}
+#not-art {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6 6 8 6;
+  background-color: grey;
+  grid-area: notArt;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: min-content min-content min-content 1fr min-content;
+  grid-template-areas:
+    "r1"
+    "r2"
+    "r3"
+    "r4"
+    "r5";
+}
+#audio-controls {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  grid-area: r1;
+}
+#song-title {
+  text-decoration: none;
+  font-size: 24;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+  outline-style: none;
+  grid-area: r2;
+  width: 100%;
+  text-align: center;
+}
+#list-title {
+  width: 100%;
+  font-size: small;
+  margin-bottom: 2px;
+  margin-top: 15px;
+  grid-area: r3;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "collector sorts";
+}
+#collection-title {
+  grid-area: collector;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+#sort-controls {
+  grid-area: sorts;
+  justify-self: end;
+  margin-top: -4px;
+}
+#collection-list {
+  width: 100%;
+  height: 100%;
+  background-color: #d0e0f0;
+  grid-area: r4;
+}
+#help2 {
+  font-size: small;
+  margin: 4 0 0 0;
+  grid-area: r5;
+}
+
+/*************** Short ****************/
+@media (min-aspect-ratio: 15/20) and (max-aspect-ratio: 9/10) {
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
+}
+
+/*************** Square ****************/
+@media (display-mode: fullscreen), (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10)  {
+  body {
+    background-color: black;
+  }
+  #player-container {
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "left player right";
+  }
+  #player {
+    height: auto;
+    grid-area: player;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas: "art";
+  }
+  #player #not-art {
+    display: none;
+  }
+  #player:hover #not-art {
+    display: inline;
+  }
+  #item-link {
+    grid-area: art;
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+  }
+  #album-art {
+    max-width: 100%;
+    width: 100vh;
+    max-height: 100vh;
+  }
+  #not-art {
+    height: auto;
+    grid-area: art;
+    align-self: end;
+    max-width: 90vw;
+    justify-self: center;
+    opacity: 0.6;
+    padding: 14px 12px 0px 12px;
+    margin-bottom: 30px;
+    display: auto;
+    width: auto;
+  }
+  #song-title {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+  }
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
+}
+
+/*************** Landscape ****************/
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) {
+  #player {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "art controls";
+  }
+  #item-link {
+    align-self: normal;
+    grid-area: art;
+    display: flex;
+    flex-direction: column;
+  }
+  #album-art {
+    align-self: self-start;
+    max-width: 100%;
+    width: 100vh;
+    max-height: 100vh;
+  }
+  #not-art {
+    min-width: 390px;
+    width: 100%;
+    grid-area: controls;
+  }
+}
+
+/*************** Mini player ****************/
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-height: 220px) {
+  #player {
+    grid-template-columns: minmax(0, max-content) minmax(280px, 1fr);
+  }
+  #not-art {
+    min-width: 280px;
+  }
+  #list-title {
+    display: none;
+  }
+  #collection-list {
+    display: none;
+  }
+  #help2 {
+    display: none;
+  }
+}
+
+/*************** No art ****************/
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 480px) and (min-height: 220px) {
+  #item-link {
+    display: none;
+  }
+}
+
+/*************** Mini no art ****************/
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 360px) and (max-height: 220px) {
+  #item-link {
+    display: none;
+  }
+}
+
+/*************** Mobile ****************/
+@media (pointer: coarse) {
+  #window-type {
+    display: none;
+  }
+  #collection-list {
+    height: max-content;
+  }
+}
