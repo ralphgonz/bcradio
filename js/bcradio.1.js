@@ -17,8 +17,10 @@ var bcradio = (function() {
 	var paramsElt;
 	var playerElt;
 	var thumbnailElt;
-	var itemLinkElt;
+	var artContainerElt;
 	var collectionListElt;
+	var coverElt;
+	var coverImageElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -32,14 +34,24 @@ var bcradio = (function() {
 		playerElt = $('#player-container');
 		paramsFormElt = $('#params-form');
 		thumbnailElt = $('#thumbnail');
-		itemLinkElt = $('#item-link');
+		artContainerElt = $('#art-container');
 		collectionListElt = $("#collection-list");
+		coverElt = $("#cover");
+		coverImageElt = $("#cover-image");
 		trackList = new TrackList();
 		itemInfos = {};
 
 		collectionListElt.on('change', function(){
 			trackList.setCurrent($(this).val());
 			pub.next();
+		});
+
+		artContainerElt.on('click', function(){
+			coverElt.show();
+		});
+
+		coverElt.on('click', function(){
+			coverElt.hide();
 		});
 
 		var searchParams = new URLSearchParams(window.location.search);
@@ -250,8 +262,8 @@ var bcradio = (function() {
     }
 
 	var setTitles = function(track) {
-		itemLinkElt.attr('href', track.itemUrl);
 		albumArtElt.attr('src', track.largeAlbumArt());
+		coverImageElt.attr('src', albumArtElt.attr('src'));
 		songTitleElt.text(`${track.artist}: ${track.title}`)
 		songTitleElt.attr('href', track.itemUrl);
 		thumbnailElt.attr('href', track.smallAlbumArt());
