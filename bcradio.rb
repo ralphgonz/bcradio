@@ -42,7 +42,7 @@ while session = server.accept
       responseData = File.binread(query)
     else
       userName = query
-      puts "User: #{userName}"
+      puts "User: #{userName} at #{Time.now}"
       uri = URI("https://bandcamp.com/#{userName}")
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
         bcRequest = Net::HTTP::Get.new(uri.request_uri)
