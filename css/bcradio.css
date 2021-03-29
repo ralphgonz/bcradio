@@ -240,9 +240,6 @@ audio {
   }
   #art-container {
     grid-area: art;
-    pointer-events: none;
-    cursor: default;
-    text-decoration: none;
   }
   #album-art {
     max-width: 100%;
@@ -264,9 +261,6 @@ audio {
   #song-title {
     margin-top: 8px;
     margin-bottom: 12px;
-    pointer-events: none;
-    cursor: default;
-    text-decoration: none;
   }
   #list-title {
     display: none;
