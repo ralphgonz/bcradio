@@ -66,9 +66,9 @@ var bcradio = (function() {
 		paramsFormElt.submit(function (evt){
 			evt.preventDefault();
 
-			userName = $('#user-name').val();
-			numberToLoad = $('#history').val();
-			identityCookie = maybeUriEncode($('#identity-cookie').val());
+			userName = $('#user-name').val().trim();
+			numberToLoad = $('#history').val().trim();
+			identityCookie = maybeUriEncode($('#identity-cookie').val().trim());
 			if (!userName) {
 				reportBadUsername();
 				return;
@@ -289,6 +289,9 @@ var bcradio = (function() {
 		currentSongElt.trigger('play');
 		currentSongElt.one('ended', function() { 
 			playNext();
+		});
+		currentSongElt.one('error', function() {
+			alert(`Failed to play song file. You may need to login to Bandcamp in another tab.`);
 		});
 	}
 	
