@@ -290,8 +290,8 @@ var bcradio = (function() {
 		currentSongElt.one('ended', function() { 
 			playNext();
 		});
-		currentSongElt.one('error', function() {
-			alert(`Failed to play song file. You may need to login to Bandcamp in another tab.`);
+		currentSongElt.one('error', function(error) {
+			alert(`Failed to play song file. You may need to login to Bandcamp in another tab. (${error.target.error.message})`);
 		});
 	}
 	
