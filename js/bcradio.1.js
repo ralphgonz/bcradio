@@ -102,7 +102,7 @@ var bcradio = (function() {
 
 	pub.start = function() {
 		$('#loading').show();
-		var userNameRequest = `/${userName}`;
+		var userNameRequest = `/userdata/${userName}`;
 		if (identityCookie) {
 			userNameRequest = `${userNameRequest}?identity-cookie=${identityCookie}`;
 		}
@@ -205,7 +205,7 @@ var bcradio = (function() {
 		// Query for remaining numberToLoad tracks
 		var fanId = dataBlobJson.fan_data.fan_id;
 		var lastToken = dataBlobJson.collection_data.last_token;
-		var moreDataRequest = `?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
+		var moreDataRequest = `moredata?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
 		if (identityCookie) {
 			moreDataRequest = `${moreDataRequest}&identity-cookie=${identityCookie}`;
 		}
