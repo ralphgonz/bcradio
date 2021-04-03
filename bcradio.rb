@@ -107,6 +107,7 @@ class BcRadio
   end
 end
 
+puts "========================================\nStarting server at #{Time.now}"
 while (session = server.accept)
   begin
     bc_radio = BcRadio.new session
