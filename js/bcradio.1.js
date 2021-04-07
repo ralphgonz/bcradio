@@ -291,6 +291,8 @@ var bcradio = (function() {
 			playNext();
 		});
 		currentSongElt.one('error', function() {
+			currentSongElt.off();
+			currentSongElt.trigger('pause');
 			alert(`Failed to play song file. You may need to login to Bandcamp in another tab.`);
 		});
 	}
