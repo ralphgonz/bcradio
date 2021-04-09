@@ -293,7 +293,7 @@ var bcradio = (function() {
 		currentSongElt.one('error', function() {
 			currentSongElt.off('error');
 			currentSongElt.trigger('pause');
-			alert('Failed to play song file. This is usually due to a timeout, click Play again. ' +
+			alert('Failed to play song file. This is usually due to a stale cache... just click Play again. ' +
 			'Otherwise if you supplied an identity cookie you may need to login to Bandcamp in another tab.');
 		});
 	}
