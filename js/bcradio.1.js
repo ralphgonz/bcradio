@@ -268,7 +268,24 @@ var bcradio = (function() {
 		songTitleElt.attr('href', track.itemUrl);
 		thumbnailElt.attr('href', track.smallAlbumArt());
 		document.title = `${track.title} (${track.artist})`;
-		currentSongElt.attr('src', track.songUrl);
+		var songRequest = track.songUrl;
+		if (identityCookie) {
+			songRequest = `${songRequest}&identity-cookie=${identityCookie}`;
+		}
+		currentSongElt.attr('src', songRequest);
+		// currentSongElt.addEventListener('fetch', function(event) {
+		// 	if(identityCookie && event.request.url === track.songUrl) {
+		// 	  event.respondWith(
+		// 		  fetch(event.request.url, {
+		// 			  method: "GET",
+		// 			  headers: {
+		// 				  "Cookie": `identity=${identityCookie};`,
+		// 			  },
+		// 			  redirect: "follow"
+		// 		  })
+		// 	  );    
+		// 	}
+		//   });
 		if ('mediaSession' in navigator) {
 			setMediaSession(track);
 		}
