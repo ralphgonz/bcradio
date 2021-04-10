@@ -268,24 +268,7 @@ var bcradio = (function() {
 		songTitleElt.attr('href', track.itemUrl);
 		thumbnailElt.attr('href', track.smallAlbumArt());
 		document.title = `${track.title} (${track.artist})`;
-		var songRequest = track.songUrl;
-		if (identityCookie) {
-			songRequest = `${songRequest}&identity-cookie=${identityCookie}`;
-		}
-		currentSongElt.attr('src', songRequest);
-		// currentSongElt.addEventListener('fetch', function(event) {
-		// 	if(identityCookie && event.request.url === track.songUrl) {
-		// 	  event.respondWith(
-		// 		  fetch(event.request.url, {
-		// 			  method: "GET",
-		// 			  headers: {
-		// 				  "Cookie": `identity=${identityCookie};`,
-		// 			  },
-		// 			  redirect: "follow"
-		// 		  })
-		// 	  );    
-		// 	}
-		//   });
+		currentSongElt.attr('src', track.songUrl);
 		if ('mediaSession' in navigator) {
 			setMediaSession(track);
 		}
