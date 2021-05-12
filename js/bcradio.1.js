@@ -87,7 +87,7 @@ var bcradio = (function() {
 					height = 856;
 					break;
 				case 'mini':
-					width = 420;
+					width = 460;
 					height = 165;
 					break;
 				default: // same tab
@@ -144,12 +144,20 @@ var bcradio = (function() {
 	}
 
 	pub.delete = function() {
-		var artist = trackList.track(trackList.current - 1).artist;
-		if (!confirm(`Permanently skip this album by ${artist}?`)) {
+		var skipItem = trackList.track(trackList.current - 1).itemId;
+
+		if (skipItems.has(skipItem)) {
+			trackList.skipMatchingItems(skipItem, false);
+			skipItems.delete(skipItem);
+			saveSkipItems(skipItems);
 			return;
 		}
-		var skipItem = trackList.track(trackList.current - 1).itemId;
-		trackList.skipMatchingItems(skipItem);
+
+		var artist = trackList.track(trackList.current - 1).artist;
+		if (!confirm(`Permanently skip this album by ${artist} on this browser?`)) {
+			return;
+		}
+		trackList.skipMatchingItems(skipItem, true);
 		skipItems.add(skipItem);
 		saveSkipItems(skipItems);
 		currentSongElt.off();
@@ -181,9 +189,14 @@ var bcradio = (function() {
 	}
 
 	var syncIsPlayed = function(i) {
-		if (trackList.track(i).isPlayed) {
+		if (trackList.track(i).isSkipped) {
+			$(`#collection-list option[value=${i}]`).removeClass("playedTrack");
+			$(`#collection-list option[value=${i}]`).addClass("skippedTrack");
+		} else if (trackList.track(i).isPlayed) {
+			$(`#collection-list option[value=${i}]`).removeClass("skippedTrack");
 			$(`#collection-list option[value=${i}]`).addClass("playedTrack");
 		} else {
+			$(`#collection-list option[value=${i}]`).removeClass("skippedTrack");
 			$(`#collection-list option[value=${i}]`).removeClass("playedTrack");
 		}
 	}
@@ -330,11 +343,12 @@ var bcradio = (function() {
 	}
 	
 	/////////////////// Class: Track
-	function Track(artist, title, songUrl, artId, itemId, itemUrl, position, isPlayed) {
+	function Track(artist, title, songUrl, artId, itemId, itemUrl, position, isSkipped) {
 		this.artist = artist;
 		this.title = title;
 		this.songUrl = songUrl;
-		this.isPlayed = isPlayed;
+		this.isPlayed = isSkipped;
+		this.isSkipped = isSkipped;
 		this.recent = position;
 		this.artId = artId;
 		this.itemUrl = itemUrl;
@@ -387,16 +401,19 @@ var bcradio = (function() {
 	}
 	TrackList.prototype.clearCounts = function() {
 		for (var i=0 ; i<this.tracks.length ; ++i) {
-			this.tracks[i].isPlayed = false;
+			this.tracks[i].isPlayed = this.tracks[i].isSkipped;
 		};
 	}
 	TrackList.prototype.clearCurrentCount = function(i) {
 		this.tracks[this.current].isPlayed = false;
 	}
-	TrackList.prototype.skipMatchingItems = function(itemId) {
+	TrackList.prototype.skipMatchingItems = function(itemId, toSkip) {
 		for (var i=0 ; i<this.tracks.length ; ++i) {
 			if (this.tracks[i].itemId == itemId) {
-				this.tracks[i].isPlayed = true;
+				if (i != this.current - 1) {
+					this.tracks[i].isPlayed = toSkip;
+				}
+				this.tracks[i].isSkipped = toSkip;
 				syncIsPlayed(i);
 			}
 		};

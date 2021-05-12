@@ -16,6 +16,16 @@ Fill in your info:
 
 ![](images/responsive-demo.jpg)
 
+## Controls
+
+* Press icons to Pause, Play, and go to Previous or Next tracks.
+* The 'X' icon will mark an album to be skipped permanently on this browser. (This does not remove the album from your Bandcamp collection.)
+   * You can un-skip the album by selecting a track in the playlist and clicking 'X' again.
+* Click a track in the playlist to skip to that track.
+* The playlist may be sorted randomly (Shuffle) or alphabetically.
+* Click the track name to open its Bandcamp page in a new tab.
+* Click the album art to toggle stretching it to fill the window.
+
 ## Limitations
 
 * This app is not affiliated with Bandcamp in any way

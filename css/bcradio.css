@@ -83,6 +83,9 @@ audio {
 .playedTrack {
   background-color: #b0b0b0;
 }
+.skippedTrack {
+  background-color: #d0c050;
+}
 .prev-next {
   align-self: center;
 }
