@@ -68,7 +68,7 @@ img {
 audio {
   flex-grow: 1;
   height: 36px;
-  width: max(50px,25vw);
+  width: max(50px,20vw);
   align-self: center;
 }
 :focus {
@@ -277,7 +277,7 @@ audio {
 @media (display-mode:browser) and (min-aspect-ratio: 11/10) {
   #player {
     display: grid;
-    grid-template-columns: minmax(0, max-content) minmax(390px, 1fr);
+    grid-template-columns: minmax(0, max-content) minmax(440px, 1fr);
     grid-template-rows: auto;
     grid-template-areas: "art controls";
   }
@@ -294,7 +294,7 @@ audio {
     max-height: 100vh;
   }
   #not-art {
-    min-width: 390px;
+    min-width: 440px;
     width: 100%;
     grid-area: controls;
   }
@@ -320,14 +320,14 @@ audio {
 }
 
 /*************** No art ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 480px) and (min-height: 220px) {
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 520px) and (min-height: 220px) {
   #art-container {
     display: none;
   }
 }
 
 /*************** Mini no art ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 360px) and (max-height: 220px) {
+@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 400px) and (max-height: 220px) {
   #art-container {
     display: none;
   }
