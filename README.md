@@ -12,7 +12,7 @@ Fill in your info:
 * Optional: copy your "identity" cookie by visiting the bandcamp website in another tab and using your browser's developer tools. This allows loading all purchased tracks in your albums rather than the one representative track, and also provides mp3-V0 quality instead of the default mp3-128.
    * Unfortunately this doesn't seem to work with some mobile devices
 * Press `Enter` and wait for your library to load.
-* If you're using a desktop computer, open the player tab as a new window to explore the different layouts available. Try making the window full-screen (F11 in Windows) to showcase the album art.
+* If you're using a desktop computer, open the player tab as a new window to explore the different layouts available. Try making the window full-screen (F11 in Windows) and tapping the album art to showcase it.
 
 ![](images/responsive-demo.jpg)
 

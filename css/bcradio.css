@@ -216,7 +216,7 @@ audio {
 }
 
 /*************** Square ****************/
-@media (display-mode: fullscreen), (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10)  {
+@media (min-aspect-ratio: 9/10) and (max-aspect-ratio: 11/10)  {
   body {
     background-color: black;
   }
@@ -277,7 +277,7 @@ audio {
 }
 
 /*************** Landscape ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) {
+@media (min-aspect-ratio: 11/10) {
   #player {
     display: grid;
     grid-template-columns: minmax(0, max-content) minmax(440px, 1fr);
@@ -304,7 +304,7 @@ audio {
 }
 
 /*************** Mini player ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-height: 220px) {
+@media (min-aspect-ratio: 11/10) and (max-height: 220px) {
   #player {
     grid-template-columns: minmax(0, max-content) minmax(280px, 1fr);
   }
@@ -323,14 +323,14 @@ audio {
 }
 
 /*************** No art ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 520px) and (min-height: 220px) {
+@media (min-aspect-ratio: 11/10) and (max-width: 520px) and (min-height: 220px) {
   #art-container {
     display: none;
   }
 }
 
 /*************** Mini no art ****************/
-@media (display-mode:browser) and (min-aspect-ratio: 11/10) and (max-width: 400px) and (max-height: 220px) {
+@media (min-aspect-ratio: 11/10) and (max-width: 400px) and (max-height: 220px) {
   #art-container {
     display: none;
   }
