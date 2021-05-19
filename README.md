@@ -25,6 +25,7 @@ Fill in your info:
 * The playlist may be sorted randomly (Shuffle) or alphabetically.
 * Click the track name to open its Bandcamp page in a new tab.
 * Click the album art to toggle stretching it to fill the window.
+   * Clicking on the lower 25% of the album art image replicates Previous/Pause/Next controls.
 
 ## Limitations
 

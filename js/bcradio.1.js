@@ -48,12 +48,24 @@ var bcradio = (function() {
 			pub.next();
 		});
 
-		artContainerElt.on('click', function(){
-			coverElt.show();
+		artContainerElt.on('click', function(e){
+			var offset = $(this).offset();
+			var x = (e.pageX - offset.left) / $(this).width();
+			var y = (e.pageY - offset.top) / $(this).height();
+			if (y > 0.75 && x < 0.33) { pub.prev(); }
+			else if (y > 0.75 && x > 0.67) { pub.next(); }
+			else if (y > 0.75) { pub.togglePausePlay(); }
+			else { coverElt.show(); }
 		});
 
-		coverElt.on('click', function(){
-			coverElt.hide();
+		coverElt.on('click', function(e){
+			var offset = $(this).offset();
+			var x = (e.pageX - offset.left) / $(this).width();
+			var y = (e.pageY - offset.top) / $(this).height();
+			if (y > 0.75 && x < 0.33) { pub.prev(); }
+			else if (y > 0.75 && x > 0.67) { pub.next(); }
+			else if (y > 0.75) { pub.togglePausePlay(); }
+			else { coverElt.hide(); }
 		});
 
 		var searchParams = new URLSearchParams(window.location.search);
@@ -130,6 +142,14 @@ var bcradio = (function() {
 		trackList.nextUnplayed();
 		populateCollectionList();
 	};
+
+	pub.togglePausePlay = function() {
+		if (currentSongElt.prop('paused')) {
+			currentSongElt.trigger('play');
+		} else {
+			currentSongElt.trigger('pause');
+		}
+	}
 
 	pub.prev = function() {
 		trackList.prev();
