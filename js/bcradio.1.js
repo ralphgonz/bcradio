@@ -145,7 +145,6 @@ var bcradio = (function() {
 
 	pub.togglePausePlay = function() {
 		if (currentSongElt.prop('paused')) {
-			currentSongElt.trigger('load');
 			currentSongElt.trigger('play');
 		} else {
 			currentSongElt.trigger('pause');
@@ -360,6 +359,7 @@ var bcradio = (function() {
 			alert('Failed to play song file...\n1. Try clicking Play again\n' +
 			'2. If you supplied an identity cookie you may need to login to Bandcamp in another tab\n' +
 			'3. Some mobile browsers don\'t support the identity cookie feature, unfortunately');
+			currentSongElt.trigger('load');
 		});
 	}
 	
