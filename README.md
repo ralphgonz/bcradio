@@ -24,8 +24,8 @@ Fill in your info:
 * Click a track in the playlist to skip to that track.
 * The playlist may be sorted randomly (Shuffle) or alphabetically.
 * Click the track name to open its Bandcamp page in a new tab.
-* Click the album art to toggle stretching it to fill the window.
-   * Clicking on the lower 25% of the album art image replicates Previous/Pause/Next controls.
+* Click the album art to toggle stretching it to fill the window...
+   * But clicking on the lower third of the album art image replicates Previous/Pause/Next controls.
 
 ## Limitations
 
