@@ -160,7 +160,7 @@ var bcradio = (function() {
 		trackList.clearCurrentCount();
 		currentSongElt.off();
 		currentSongElt.trigger('pause');
-		playNext();
+		playNext(true);
 	}
 
 	pub.delete = function() {
@@ -182,7 +182,7 @@ var bcradio = (function() {
 		saveSkipItems(skipItems);
 		currentSongElt.off();
 		currentSongElt.trigger('pause');
-		playNext();
+		playNext(true);
 	}
 
 	///////////////////////////////// private /////////////////////////////////////
@@ -290,7 +290,7 @@ var bcradio = (function() {
 		playerElt.show();
 		pub.resequence();
 		$('#loading').hide();
-		playNext();
+		playNext(true);
 	}
 
 	var extractInfos = function(items) {
@@ -337,7 +337,7 @@ var bcradio = (function() {
 	}
 
 	// Doubles as entry point for manually-clicked song, without affecting sequence
-	var playNext = function() {
+	var playNext = function(startPlaying) {
 		if (!trackList.nextUnplayed()) {
 			pub.resequence();
 		}
@@ -348,9 +348,11 @@ var bcradio = (function() {
 		setTitles(trackList.track(i));
 
 		currentSongElt.trigger('load');
-		currentSongElt.trigger('play');
+		if (startPlaying) {
+			currentSongElt.trigger('play');
+		}
 		currentSongElt.one('ended', function() { 
-			playNext();
+			playNext(true);
 		});
 
 		currentSongElt.one('error', function() {
@@ -359,7 +361,7 @@ var bcradio = (function() {
 			alert('Failed to play song file, trying next song...\n' +
 			'* If you supplied an identity cookie you may need to login to Bandcamp in another tab\n' +
 			'* Some mobile browsers don\'t support the identity cookie feature, unfortunately');
-			playNext();
+			playNext(false);
 		});
 	}
 	
