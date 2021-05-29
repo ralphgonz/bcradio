@@ -67,7 +67,7 @@ img {
 }
 audio {
   flex-grow: 1;
-  height: 36px;
+  height: 26px;
   width: max(50px,20vw);
   align-self: center;
 }
@@ -286,7 +286,7 @@ audio {
 @media (min-aspect-ratio: 11/10) {
   #player {
     display: grid;
-    grid-template-columns: minmax(0, max-content) minmax(470px, 1fr);
+    grid-template-columns: minmax(0, max-content) minmax(450px, 1fr);
     grid-template-rows: auto;
     grid-template-areas: "art controls";
   }
@@ -303,7 +303,7 @@ audio {
     max-height: 100vh;
   }
   #not-art {
-    min-width: 470px;
+    min-width: 450px;
     width: 100%;
     grid-area: controls;
   }
@@ -329,14 +329,14 @@ audio {
 }
 
 /*************** No art ****************/
-@media (min-aspect-ratio: 11/10) and (max-width: 550px) and (min-height: 220px) {
+@media (min-aspect-ratio: 11/10) and (max-width: 530px) and (min-height: 220px) {
   #art-container {
     display: none;
   }
 }
 
 /*************** Mini no art ****************/
-@media (min-aspect-ratio: 11/10) and (max-width: 430px) and (max-height: 220px) {
+@media (min-aspect-ratio: 11/10) and (max-width: 410px) and (max-height: 220px) {
   #art-container {
     display: none;
   }

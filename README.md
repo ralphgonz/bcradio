@@ -49,6 +49,8 @@ loading all your purchased tracks rather than just the "featured" tracks, and al
 You can find your identity cookie by logging into the Bandcamp website in another tab, enabling your browser's developer 
 tools, and copying the value from (Application >) Storage > Cookies > bandcamp.com > identity.
 
+* _Unfortunately many mobile devices do not support this feature_
+
 ## Limitations
 
 * This app is not affiliated with Bandcamp in any way

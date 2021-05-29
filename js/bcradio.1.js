@@ -435,7 +435,8 @@ var bcradio = (function() {
 			currentSongElt.trigger('pause');
 			currentSongElt.off('error');
 			alert('Failed to play song file:\n' +
-			'* If you supplied an identity cookie please refresh your Bandcamp login in another tab and retry');
+			'* If you supplied an identity cookie please refresh your Bandcamp login in another tab and retry\n' +
+			'* Some mobile browsers don\'t support the identity cookie feature');
 		});
 	}
 	
