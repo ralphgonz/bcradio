@@ -79,7 +79,7 @@ var bcradio = (function() {
 			userName = searchParams.get('username');
 			numberToLoad = searchParams.get('history');
 			identityCookie = maybeUriEncode(searchParams.get('identity'));
-			if (searchParams.has('pl')) {
+			if (searchParams.has('pl') && searchParams.get('pl')) {
 				filterItems = new Set(searchParams.get('pl').split(','));
 			}
 			pub.start();
@@ -313,7 +313,7 @@ var bcradio = (function() {
 		} catch (err) {
 			error = err.message;
 		} finally {
-			if (!dataBlobJson || !fanName || trackList.length() == 0) {
+			if (!dataBlobJson || !fanName) {
 				reportBadUsername(error);
 				return;
 			}
