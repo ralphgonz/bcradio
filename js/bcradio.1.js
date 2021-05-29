@@ -7,6 +7,7 @@ var bcradio = (function() {
 	var numberToLoad;
 	var identityCookie;
 	var filterItems;
+	var playlistName;
 
 	var trackList;
 	var itemInfos;
@@ -47,6 +48,7 @@ var bcradio = (function() {
 		itemInfos = {};
 		skipItems = loadSkipItems();
 		playlistItems = new Set();
+		playlistName = null;
 		filterItems = null;
 
 		collectionListElt.on('change', function(){
@@ -78,9 +80,10 @@ var bcradio = (function() {
 		if (searchParams.has('username')) {
 			userName = searchParams.get('username');
 			numberToLoad = searchParams.get('history');
-			identityCookie = maybeUriEncode(searchParams.get('identity'));
+			identityCookie = searchParams.get('identity');
 			if (searchParams.has('pl') && searchParams.get('pl')) {
 				filterItems = new Set(searchParams.get('pl').split(','));
+				playlistName = searchParams.get('plname');
 			}
 			pub.start();
 			return;
@@ -91,7 +94,7 @@ var bcradio = (function() {
 
 			userName = $('#user-name').val().trim();
 			numberToLoad = $('#history').val().trim();
-			identityCookie = maybeUriEncode($('#identity-cookie').val().trim());
+			identityCookie = maybeUriDecode($('#identity-cookie').val().trim());
 			if (!userName) {
 				reportBadUsername();
 				return;
@@ -116,7 +119,7 @@ var bcradio = (function() {
 					return;
 			}
 		
-			var popup = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${identityCookie}`,
+			var popup = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}`,
 				'bcradio',
 				`menubar=no,toolbar=no,location=no,status=no,left=100,top=100,width=${width},height=${height}`);
 			popup.resizeTo(width, height);
@@ -127,7 +130,7 @@ var bcradio = (function() {
 		$('#loading').show();
 		var userNameRequest = `/userdata/${userName}`;
 		if (identityCookie) {
-			userNameRequest = `${userNameRequest}?identity-cookie=${identityCookie}`;
+			userNameRequest = `${userNameRequest}?identity-cookie=${maybeUriEncode(identityCookie)}`;
 		}
 		$.get(userNameRequest, loadInitialData)
 		.fail(function() {
@@ -136,8 +139,12 @@ var bcradio = (function() {
 	};
 
 	pub.openPlaylist = function() {
+		var name = prompt("Playlist name", "Playlist");
+		if (!name) {
+			return;
+		}
 		var playlist = Array.from(playlistItems).join(",");
-		var win = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${identityCookie}&pl=${playlist}`, '_blank');
+		var win = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}&plname=${maybeUriEncode(name)}&pl=${playlist}`, '_blank');
 		if (win) {
 			win.focus();
 		} else {
@@ -276,11 +283,22 @@ var bcradio = (function() {
 		openPlaylistElt.addClass('disabled-icon');
 	}
 
+	var maybeUriDecode = function(s) {
+		if (!s) { return s; }
+		try {
+			return decodeURIComponent(s);
+		} catch (err) {
+			return s;
+		}
+	}
+
 	var maybeUriEncode = function(s) {
 		if (!s) { return s; }
-		var decoded = decodeURIComponent(s);
-		if (decoded != s) { return s; }
-		return encodeURIComponent(s);
+		try {
+			return encodeURIComponent(s);
+		} catch (err) {
+			return s;
+		}
 	}
 
 	var reportBadUsername = function(error) {
@@ -307,7 +325,8 @@ var bcradio = (function() {
 					cookieStatus = " (invalid cookie)";
 				}
 			}
-			collectionTitleElt.text(`${fanName}'s collection${cookieStatus}`);
+			var collectionName = playlistName || `${fanName}'s collection`;
+			collectionTitleElt.text(`${collectionName}${cookieStatus}`);
 			extractInfos(Object.values(dataBlobJson.item_cache.collection)); // (a<album_id> or t<track_id>) -> { album_id, featured_track, item_art_id, item_id}
 			extractTracks(dataBlobJson.tracklists.collection);
 		} catch (err) {
@@ -324,7 +343,7 @@ var bcradio = (function() {
 		var lastToken = dataBlobJson.collection_data.last_token;
 		var moreDataRequest = `moredata?fan-id=${fanId}&older-than-token=${lastToken}&count=${numberToLoad}`;
 		if (identityCookie) {
-			moreDataRequest = `${moreDataRequest}&identity-cookie=${identityCookie}`;
+			moreDataRequest = `${moreDataRequest}&identity-cookie=${maybeUriEncode(identityCookie)}`;
 		}
 		$.get(moreDataRequest, loadMoreData)
 		.fail(function() {
@@ -416,8 +435,7 @@ var bcradio = (function() {
 			currentSongElt.trigger('pause');
 			currentSongElt.off('error');
 			alert('Failed to play song file:\n' +
-			'* If you supplied an identity cookie please refresh your Bandcamp login in another tab and retry\n' +
-			'* Some mobile browsers don\'t support the identity cookie feature');
+			'* If you supplied an identity cookie please refresh your Bandcamp login in another tab and retry');
 		});
 	}
 	
