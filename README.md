@@ -2,8 +2,6 @@ _BCRadio is a web app to shuffle-play your Bandcamp collection and share playlis
 
 [On the air live.](http://bcradio.muskratworks.com)
 
-[[_TOC_]]
-
 ## Usage
 
 Fill in your info:
