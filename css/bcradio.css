@@ -67,7 +67,7 @@ img {
 }
 audio {
   flex-grow: 1;
-  height: 36px;
+  height: 34px;
   width: max(50px,20vw);
   align-self: center;
 }
