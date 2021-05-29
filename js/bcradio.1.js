@@ -6,10 +6,12 @@ var bcradio = (function() {
 	var userName;
 	var numberToLoad;
 	var identityCookie;
+	var filterItems;
 
 	var trackList;
 	var itemInfos;
 	var skipItems;
+	var playlistItems;
 
 	var albumArtElt;
 	var currentSongElt;
@@ -22,6 +24,7 @@ var bcradio = (function() {
 	var collectionListElt;
 	var coverElt;
 	var coverImageElt;
+	var openPlaylistElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -39,9 +42,12 @@ var bcradio = (function() {
 		collectionListElt = $("#collection-list");
 		coverElt = $("#cover");
 		coverImageElt = $("#cover-image");
+		openPlaylistElt = $("#open-playlist");
 		trackList = new TrackList();
 		itemInfos = {};
 		skipItems = loadSkipItems();
+		playlistItems = new Set();
+		filterItems = null;
 
 		collectionListElt.on('change', function(){
 			trackList.setCurrent($(this).val());
@@ -73,6 +79,9 @@ var bcradio = (function() {
 			userName = searchParams.get('username');
 			numberToLoad = searchParams.get('history');
 			identityCookie = maybeUriEncode(searchParams.get('identity'));
+			if (searchParams.has('pl')) {
+				filterItems = new Set(searchParams.get('pl').split(','));
+			}
 			pub.start();
 			return;
 		}
@@ -91,7 +100,7 @@ var bcradio = (function() {
 			var height;
 			switch($('input[name=windowType]:checked').val()) {
 				case 'vertical':
-					width = 420;
+					width = 460;
 					height = 800;
 					break;
 				case 'album':
@@ -124,6 +133,16 @@ var bcradio = (function() {
 		.fail(function() {
 			reportBadUsername("HTTP GET request failed");
 		});
+	};
+
+	pub.openPlaylist = function() {
+		var playlist = Array.from(playlistItems).join(",");
+		var win = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${identityCookie}&pl=${playlist}`, '_blank');
+		if (win) {
+			win.focus();
+		} else {
+			alert('Please allow popups for this website');
+		}
 	};
 
 	pub.resequence = function() {
@@ -163,7 +182,7 @@ var bcradio = (function() {
 		playNext(true);
 	}
 
-	pub.delete = function() {
+	pub.toggleDelete = function() {
 		var skipItem = trackList.track(trackList.current - 1).itemId;
 
 		if (skipItems.has(skipItem)) {
@@ -183,6 +202,19 @@ var bcradio = (function() {
 		currentSongElt.off();
 		currentSongElt.trigger('pause');
 		playNext(true);
+	}
+
+	pub.togglePlaylist = function() {
+		var playlistItem = trackList.track(trackList.current - 1).itemId;
+
+		if (playlistItems.has(playlistItem)) {
+			playlistItems.delete(playlistItem);
+			trackList.playlistMatchingItems(playlistItem, false);
+		} else {
+			playlistItems.add(playlistItem);
+			trackList.playlistMatchingItems(playlistItem, true);
+		}
+		syncOpenPlaylistButton();
 	}
 
 	///////////////////////////////// private /////////////////////////////////////
@@ -205,7 +237,9 @@ var bcradio = (function() {
 		for (var i=0 ; i<trackList.length() ; ++i) {
 			collectionListElt.append(`<option value="${i}">${trackList.track(i).artist}: ${trackList.track(i).title}</option>\n`);
 			syncIsPlayed(i);
+			syncIsPlaylist(i);
 		}
+		syncOpenPlaylistButton();
 	}
 
 	var syncIsPlayed = function(i) {
@@ -219,6 +253,27 @@ var bcradio = (function() {
 			$(`#collection-list option[value=${i}]`).removeClass("skippedTrack");
 			$(`#collection-list option[value=${i}]`).removeClass("playedTrack");
 		}
+	}
+
+	var syncIsPlaylist = function(i) {
+		var arrowText = '\u2705 ';
+		var t = $(`#collection-list option[value=${i}]`).text().replace(arrowText, '');
+		if (trackList.track(i).isPlaylist) {
+			t = arrowText + t;
+		}
+		$(`#collection-list option[value=${i}]`).text(t);
+	}
+
+	var syncOpenPlaylistButton = function() {
+		for (var i=0 ; i<trackList.length() ; ++i) {
+			if (trackList.track(i).isPlaylist) {
+				openPlaylistElt.prop('disabled', false);
+				openPlaylistElt.removeClass('disabled-icon');
+				return;
+			}
+		}
+		openPlaylistElt.prop('disabled', true);
+		openPlaylistElt.addClass('disabled-icon');
 	}
 
 	var maybeUriEncode = function(s) {
@@ -306,7 +361,9 @@ var bcradio = (function() {
 			songs.forEach(function(track) {
 				var file = track.file["mp3-v0"] || track.file["mp3-128"];
 				var itemId = album.substring(1);
-				trackList.addTrack(track.artist, track.title, file, itemInfos[itemId].artId, itemId, itemInfos[itemId].itemUrl);
+				if (!filterItems || filterItems.has(itemId)) {
+					trackList.addTrack(track.artist, track.title, file, itemInfos[itemId].artId, itemId, itemInfos[itemId].itemUrl);
+				}
 			});
 		}
 	}
@@ -371,6 +428,7 @@ var bcradio = (function() {
 		this.songUrl = songUrl;
 		this.isPlayed = isSkipped;
 		this.isSkipped = isSkipped;
+		this.isPlaylist = false;
 		this.recent = position;
 		this.artId = artId;
 		this.itemUrl = itemUrl;
@@ -437,6 +495,14 @@ var bcradio = (function() {
 				}
 				this.tracks[i].isSkipped = toSkip;
 				syncIsPlayed(i);
+			}
+		};
+	}
+	TrackList.prototype.playlistMatchingItems = function(itemId, toggle) {
+		for (var i=0 ; i<this.tracks.length ; ++i) {
+			if (this.tracks[i].itemId == itemId) {
+				this.tracks[i].isPlaylist = toggle;
+				syncIsPlaylist(i);
 			}
 		};
 	}

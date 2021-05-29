@@ -53,7 +53,8 @@
                     <img class="prev-next" src="images/prev-outline.png" alt="prev" width=40 height=40 onclick="bcradio.prev();" />
                     <audio id="current-song" controls preload="none" src=""></audio>
                     <img class="prev-next" src="images/next-outline.png" alt="next" width=40 height=40 onclick="bcradio.next();" />
-                    <img class="prev-next" src="images/delete.png" alt="delete" width=40 height=40 onclick="bcradio.delete();" />
+                    <img class="prev-next" src="images/delete.png" alt="delete" width=40 height=40 onclick="bcradio.toggleDelete();" />
+                    <img class="prev-next" src="images/playlist.png" alt="add to playlist" width=40 height=40 onclick="bcradio.togglePlaylist();" />
                 </div>
 
                 <a href="" id="song-title" target="_blank"></a>
@@ -63,6 +64,7 @@
                     <div id="sort-controls">
                         <input type="radio" id="radio-shuffle" name="sequencing" value="shuffle" checked="checked" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-shuffle">Shuffle</label>
                         <input type="radio" id="radio-alphabetic" name="sequencing" value="alphabetic" onclick="bcradio.resequence();" /><label class="sort-label" for="radio-alphabetic">Alphabetic</label>
+                        <input type="image" id="open-playlist" disabled class="tiny-icon" src="images/external-link.png" width=18 height=18 onclick="bcradio.openPlaylist();" />
                     </div>
                 </div>
 
