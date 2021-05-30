@@ -119,7 +119,7 @@ var bcradio = (function() {
 					return;
 			}
 		
-			var popup = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}`,
+			var popup = window.open(`${document.location.href.split('?')[0]}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}`,
 				'bcradio',
 				`menubar=no,toolbar=no,location=no,status=no,left=100,top=100,width=${width},height=${height}`);
 			popup.resizeTo(width, height);
@@ -144,7 +144,7 @@ var bcradio = (function() {
 			return;
 		}
 		var playlist = Array.from(playlistItems).join(",");
-		var win = window.open(`${document.location.href}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}&plname=${maybeUriEncode(name)}&pl=${playlist}`, '_blank');
+		var win = window.open(`${document.location.href.split('?')[0]}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}&plname=${maybeUriEncode(name)}&pl=${playlist}`, '_blank');
 		if (win) {
 			win.focus();
 		} else {
