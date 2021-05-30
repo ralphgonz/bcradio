@@ -103,8 +103,8 @@ var bcradio = (function() {
 			var height;
 			switch($('input[name=windowType]:checked').val()) {
 				case 'vertical':
-					width = 460;
-					height = 800;
+					width = 200;
+					height = 520;
 					break;
 				case 'album':
 					width = 800;

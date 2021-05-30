@@ -208,6 +208,13 @@ audio {
   grid-area: r5;
 }
 
+/*************** Skinny ****************/
+@media (max-aspect-ratio: 15/20) and (max-width: 230px) {
+  #collection-title {
+    display: none;
+  }
+}
+
 /*************** Short ****************/
 @media (min-aspect-ratio: 15/20) and (max-aspect-ratio: 9/10) {
   #list-title {
