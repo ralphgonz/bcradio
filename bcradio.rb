@@ -15,12 +15,7 @@ class Response
   attr_reader :code
 
   def initialize(code:, data: '')
-    @response = <<~END_OF_STRING
-      HTTP/1.1 200 OK
-      
-      
-      hello world
-    END_OF_STRING
+    @response = "HTTP/1.1 200 OK\r\n\r\nhello world\r\n"
     @code = code
   end
 
