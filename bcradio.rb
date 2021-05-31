@@ -16,10 +16,10 @@ class Response
 
   def initialize(code:, data: '')
     @response = <<~END_OF_STRING
-      HTTP/1.1 #{code}
-      Content-Length: #{data.size}
+      HTTP/1.1 200 OK
       
-      #{data}
+      
+      hello world
     END_OF_STRING
     @code = code
   end
