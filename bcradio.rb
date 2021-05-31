@@ -15,7 +15,7 @@ class Response
   attr_reader :code
 
   def initialize(code:, data: '')
-    @response = "HTTP/1.1 #{code}\r\nContent-Length: #{data.size}\r\n#{data}"
+    @response = "HTTP/1.1 #{code}\r\nContent-Length: #{data.size}\r\n\r\n#{data}\r\n"
     @code = code
   end
 
