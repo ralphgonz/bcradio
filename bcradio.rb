@@ -5,6 +5,7 @@ require 'socket'
 require 'net/http'
 require 'cgi'
 
+$verbose = true
 port = ARGV.empty? ? 5678 : ARGV[0]
 server = TCPServer.new port
 $stdout.sync = true
@@ -43,6 +44,7 @@ class BcRadio
   end
 
   def process_request
+    puts "==== Processing request #{@query} at #{Time.now}" if $verbose
     case @query
     when %r{^userdata/(.+)}
       @response_data = handle_user_data_request Regexp.last_match(1)
@@ -56,6 +58,7 @@ class BcRadio
   def send_response
     return unless @response_data
 
+    puts "==== Sending response at #{Time.now}" if $verbose
     response = Response.new(code: 200, data: @response_data)
     response.send(@session)
   end
@@ -77,11 +80,12 @@ class BcRadio
   end
 
   def handle_file_request
+    puts "==== Read file #{@query} at #{Time.now}" if $verbose
     File.binread(@query)
   end
 
   def handle_user_data_request user_name
-    puts "User: #{user_name} at #{Time.now}"
+    puts "==== User data request for #{user_name} at #{Time.now}"
     uri = URI("https://bandcamp.com/#{user_name}")
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       bc_request = Net::HTTP::Get.new(uri.request_uri)
@@ -93,6 +97,7 @@ class BcRadio
   end
 
   def handle_more_data_request
+    puts "==== More data request at #{Time.now}" if $verbose
     uri = URI('https://bandcamp.com/api/fancollection/1/collection_items')
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       bc_request = Net::HTTP::Post.new(uri.request_uri)
@@ -109,13 +114,13 @@ class BcRadio
 end
 
 puts '================================================================================'
-puts "Starting server at #{Time.now}"
+puts "==== Starting server at #{Time.now}"
 while (session = server.accept)
   begin
     bc_radio = BcRadio.new session
     bc_radio.process_request
   rescue => e # rubocop:disable Style/RescueStandardError
-    puts "==== #{e.message} at #{Time.now}"
+    puts "==== ERROR #{e.message} at #{Time.now}"
   else
     bc_radio.send_response
   ensure
