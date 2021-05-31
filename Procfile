@@ -1,1 +1,1 @@
-web: bundle exec ruby bcradio.rb 80
+web: bundle exec ruby bcradio.rb $PORT
