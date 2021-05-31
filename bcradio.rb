@@ -15,7 +15,7 @@ class Response
   attr_reader :code
 
   def initialize(code:, data: '')
-    @response = "HTTP/1.1 200 OK\r\n\r\nhello world\r\n"
+    @response = "HTTP/1.1 #{code}\r\nContent-Length: #{data.size}\r\n#{data}"
     @code = code
   end
 
@@ -34,7 +34,6 @@ class BcRadio
     request = session.gets
     return if request.nil?
 
-    puts "==== Initializing session with request #{request} at #{Time.now}" if $verbose
     _method, uri = request.split(/\s/)
     parse_uri uri
   end
