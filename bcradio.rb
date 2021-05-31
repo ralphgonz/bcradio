@@ -5,7 +5,7 @@ require 'socket'
 require 'net/http'
 require 'cgi'
 
-$verbose = true
+$verbose = false
 port = ARGV.empty? ? 5678 : ARGV[0]
 server = TCPServer.new port
 $stdout.sync = true
