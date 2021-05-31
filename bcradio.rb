@@ -5,7 +5,8 @@ require 'socket'
 require 'net/http'
 require 'cgi'
 
-server = TCPServer.new 5678
+port = ARGV.empty? ? 5678 : ARGV[0]
+server = TCPServer.new port
 $stdout.sync = true
 
 # Http response wrapper
