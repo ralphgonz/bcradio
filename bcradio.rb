@@ -39,6 +39,7 @@ class BcRadio
     request = session.gets
     return if request.nil?
 
+    puts "==== Initializing session with request #{request} at #{Time.now}" if $verbose
     _method, uri = request.split(/\s/)
     parse_uri uri
   end
