@@ -13,6 +13,7 @@ var bcradio = (function() {
 	var itemInfos;
 	var skipItems;
 	var playlistItems;
+	var warnedAboutUnshareablePlaylist;
 
 	var albumArtElt;
 	var currentSongElt;
@@ -50,6 +51,7 @@ var bcradio = (function() {
 		playlistItems = new Set();
 		playlistName = null;
 		filterItems = null;
+		warnedAboutUnshareablePlaylist = false;
 
 		collectionListElt.on('change', function(){
 			trackList.setCurrent($(this).val());
@@ -218,6 +220,12 @@ var bcradio = (function() {
 			playlistItems.delete(playlistItem);
 			trackList.playlistMatchingItems(playlistItem, false);
 		} else {
+			if (identityCookie && !warnedAboutUnshareablePlaylist) {
+				warnedAboutUnshareablePlaylist = true;
+				alert("You are signed in to BC Radio with an 'identity cookie', " +
+					"creating a personal-use-only playlist. To create a shareable playlist please " +
+					"restart BC Radio without providing an identity cookie.");
+			}
 			playlistItems.add(playlistItem);
 			trackList.playlistMatchingItems(playlistItem, true);
 		}
