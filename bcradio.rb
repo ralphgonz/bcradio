@@ -31,11 +31,14 @@ class BcRadio
     @query = nil
     @response_data = nil
     @params = {}
-    request = session.gets
-    return if request.nil?
+    while (request = session.gets)
+      puts "=== #{request}"
+    end
+    puts '============================'
+    # return if request.nil?
 
-    _method, uri = request.split(/\s/)
-    parse_uri uri
+    # _method, uri = request.split(/\s/)
+    # parse_uri uri
   end
 
   def process_request
