@@ -48,7 +48,7 @@ class BcRadio
   end
 
   def validate_https_request
-    @headers['x-forwarded-proto'] != 'http'
+    !@headers['host'].include?('bcradio.muskratworks.com') || @headers['x-forwarded-proto'] != 'http'
   end
 
   def process_request
