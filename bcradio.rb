@@ -5,7 +5,7 @@ require 'socket'
 require 'net/http'
 require 'cgi'
 
-$verbose = true
+$verbose = false
 port = ARGV.empty? ? 5678 : ARGV[0]
 heroku_redirect_http = ARGV.empty? ? false : ARGV[1] == 'true'
 server = TCPServer.new port
@@ -44,7 +44,6 @@ class BcRadio
 
     parse_headers session
     @initialized = true
-    puts "---- uri=#{@uri}, host=#{@headers['host']}, proto=#{@headers['x-forwarded-proto']}"
   end
 
   def validate_https_request
