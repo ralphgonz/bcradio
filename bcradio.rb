@@ -75,7 +75,7 @@ class BcRadio
   def send_redirect
     puts "==== Sending 301 redirect at #{Time.now}" if $verbose
     # data = "Location: https://#{@headers['host']}#{@uri}"
-    response = Response.new(code: 301, data: 'Location: https://bcradio.muskratworks.com')
+    response = Response.new(code: 200, data: 'Location: https://bcradio.muskratworks.com')
     response.send(@session)
   end
 
