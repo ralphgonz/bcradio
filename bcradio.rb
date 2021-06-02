@@ -40,6 +40,7 @@ class BcRadio
 
     parse_headers session
     @initialized = true
+    puts "---- uri=#{@uri}, host=#{@headers['host']}, proto=#{@headers['x-forwarded-proto']}"
   end
 
   def validate_https_request
@@ -68,7 +69,7 @@ class BcRadio
   end
 
   def send_redirect
-    puts "==== Sending redirect at #{Time.now}" if $verbose
+    puts "==== Sending 301 redirect at #{Time.now}" if $verbose
     data = "Location: https://#{@headers['host']}#{@uri}"
     response = Response.new(code: 301, data: data)
     response.send(@session)
@@ -85,18 +86,19 @@ class BcRadio
     request = session.gets
     return if request.nil?
 
-    method, @uri = request.split(/\s/)
+    method, @uri = request.strip.split(/\s/)
     @uri = nil if method != 'GET'
   end
 
   def parse_headers session
     while (line = session.gets)
-      break if line.strip.empty?
+      line = line.strip.downcase
+      break if line.empty?
 
       key, val = line.split(/:\s*/)
       next if key.nil?
 
-      @headers[key.downcase] = val
+      @headers[key] = val
     end
   end
 
