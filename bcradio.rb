@@ -17,7 +17,7 @@ class Response
 
   def initialize(code:, data: '')
     if code == 301
-      @response = "HTTP/1.1 301 Moved Permanently\r\n#{data}\r\n"
+      @response = "HTTP/1.1 301 Moved Permanently\r\n#{data}\r\n\r\n"
     else
       @response = "HTTP/1.1 #{code}\r\nContent-Length: #{data.size}\r\n\r\n#{data}\r\n"
     end
