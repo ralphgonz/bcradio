@@ -1,1 +1,1 @@
-web: bundle exec ruby bcradio.rb $PORT
+web: bundle exec ruby bcradio.rb $PORT true

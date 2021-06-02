@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# bcradio.rb
+# bcradio.rb [PORT] [true|false]
 require 'socket'
 require 'net/http'
 require 'cgi'
 
-$verbose = false
+$verbose = true
 port = ARGV.empty? ? 5678 : ARGV[0]
+heroku_redirect_http = ARGV.empty? ? false : ARGV[1] == 'true'
 server = TCPServer.new port
 $stdout.sync = true
 
@@ -26,22 +27,27 @@ end
 
 # Main BcRadio server
 class BcRadio
+  attr_reader :initialized
+
   def initialize session
     @session = session
     @query = nil
     @response_data = nil
     @params = {}
-    while (request = session.gets)
-      puts "=== #{request}"
-    end
-    puts '============================'
-    # return if request.nil?
+    @headers = {}
+    get_uri session
+    return if @uri.nil?
 
-    # _method, uri = request.split(/\s/)
-    # parse_uri uri
+    parse_headers session
+    @initialized = true
+  end
+
+  def validate_https_request
+    @headers['x-forwarded-proto'] != 'http'
   end
 
   def process_request
+    parse_uri
     puts "==== Processing request #{@query} at #{Time.now}" if $verbose
     case @query
     when %r{^userdata/(.+)}
@@ -61,6 +67,13 @@ class BcRadio
     response.send(@session)
   end
 
+  def send_redirect
+    puts "==== Sending redirect at #{Time.now}" if $verbose
+    data = "Location: https://#{@headers['host']}#{@uri}"
+    response = Response.new(code: 301, data: data)
+    response.send(@session)
+  end
+
   def close
     @session.close
   end
@@ -68,12 +81,29 @@ class BcRadio
   ##############################################################################
   private
 
-  def parse_uri uri
-    return if uri.nil?
+  def get_uri session
+    request = session.gets
+    return if request.nil?
 
-    uri, param_string = uri.split('?')
+    method, @uri = request.split(/\s/)
+    @uri = nil if method != 'GET'
+  end
+
+  def parse_headers session
+    while (line = session.gets)
+      break if line.strip.empty?
+
+      key, val = line.split(/:\s*/)
+      next if key.nil?
+
+      @headers[key.downcase] = val
+    end
+  end
+
+  def parse_uri
+    uri_split, param_string = @uri.split('?')
     @params = param_string.nil? ? {} : CGI.parse(param_string)
-    _, @query = uri.split('/', 2)
+    _, @query = uri_split.split('/', 2)
     @query = 'index.html' if @query.nil? || @query.empty?
   end
 
@@ -116,11 +146,16 @@ puts "==== Starting server at #{Time.now}"
 while (session = server.accept)
   begin
     bc_radio = BcRadio.new session
-    bc_radio.process_request
+    next unless bc_radio.initialized
+
+    if !heroku_redirect_http || bc_radio.validate_https_request
+      bc_radio.process_request
+      bc_radio.send_response
+    else
+      bc_radio.send_redirect
+    end
   rescue => e # rubocop:disable Style/RescueStandardError
     puts "==== ERROR #{e.message} at #{Time.now}"
-  else
-    bc_radio.send_response
   ensure
     bc_radio.close
   end
