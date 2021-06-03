@@ -40,7 +40,7 @@ You can create and share playlists made up of albums in your collection:
 This feature is intended to help raise awareness of the great music available on Bandcamp. Please encourage
 your friends to sign up and start their own collections!
 
-### Understanding Identity Cookies
+## Understanding Identity Cookies
 
 BCRadio cannot sign into your Bandcamp account directly. By default it only loads the publicly-available "featured" track for 
 each album, and is limited to mp3-128k streaming resolution. By providing your Bandcamp identity cookie to BCRadio, you enable 
@@ -50,6 +50,15 @@ You can find your identity cookie by logging into the Bandcamp website in anothe
 tools, and copying the value from (Application >) Storage > Cookies > bandcamp.com > identity.
 
 * _Unfortunately many mobile devices do not support this feature_
+
+## Security
+
+BC Radio does not ask for your Bandcamp password and never stores
+your username or identity cookie. All communications are encrypted (https connection).
+
+The service currently runs on the 
+San Francisco-based Heroku cloud platform, which is itself
+hosted securely on Amazon's EC2 cloud-computing platform. 
 
 ## Limitations
 
