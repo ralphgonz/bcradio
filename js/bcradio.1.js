@@ -1,5 +1,5 @@
 // 	bcradio: Play your bandcamp collection
-// 	Ralph Gonzalez 2021
+// 	Copyright © 2021 Ralph Gonzalez
 
 var bcradio = (function() {
 

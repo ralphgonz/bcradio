@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # bcradio.rb [PORT] [true|false]
+#	Copyright 2021 Ralph Gonzalez
+
 require 'socket'
 require 'net/http'
 require 'cgi'
