@@ -6,14 +6,15 @@ var bcradio = (function() {
 	var userName;
 	var numberToLoad;
 	var identityCookie;
-	var filterItems;
+	var playlistFilterItems;
 	var playlistName;
 
 	var trackList;
 	var itemInfos;
 	var skipItems;
 	var playlistItems;
-	var warnedAboutUnshareablePlaylist;
+	var playlists;
+	var cookied;
 
 	var albumArtElt;
 	var currentSongElt;
@@ -27,6 +28,9 @@ var bcradio = (function() {
 	var coverElt;
 	var coverImageElt;
 	var openPlaylistElt;
+	var publishPlaylistElt;
+	var unpublishPlaylistElt;
+	var playlistsElt;
 
 	///////////////////////////////// public methods /////////////////////////////////////
 	var pub = {};
@@ -45,13 +49,17 @@ var bcradio = (function() {
 		coverElt = $("#cover");
 		coverImageElt = $("#cover-image");
 		openPlaylistElt = $("#open-playlist");
+		publishPlaylistElt = $("#publish-playlist");
+		unpublishPlaylistElt = $("#unpublish-playlist");
+		playlistsElt = $("#playlists");
 		trackList = new TrackList();
 		itemInfos = {};
 		skipItems = loadSkipItems();
 		playlistItems = new Set();
 		playlistName = null;
-		filterItems = null;
-		warnedAboutUnshareablePlaylist = false;
+		playlistFilterItems = null;
+		playlists = null;
+		cookied = null;
 
 		collectionListElt.on('change', function(){
 			trackList.setCurrent($(this).val());
@@ -84,7 +92,7 @@ var bcradio = (function() {
 			numberToLoad = searchParams.get('history');
 			identityCookie = searchParams.get('identity');
 			if (searchParams.has('pl') && searchParams.get('pl')) {
-				filterItems = new Set(searchParams.get('pl').split(','));
+				playlistFilterItems = new Set(searchParams.get('pl').split(','));
 				playlistName = searchParams.get('plname');
 			}
 			pub.start();
@@ -101,43 +109,41 @@ var bcradio = (function() {
 				reportBadUsername();
 				return;
 			}
-			var width;
-			var height;
-			switch($('input[name=windowType]:checked').val()) {
-				case 'vertical':
-					width = 200;
-					height = 520;
-					break;
-				case 'album':
-					width = 800;
-					height = 856;
-					break;
-				case 'mini':
-					width = 460;
-					height = 165;
-					break;
-				default: // same tab
-					pub.start();
-					return;
-			}
-		
-			var popup = window.open(`${document.location.href.split('?')[0]}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}`,
-				'bcradio',
-				`menubar=no,toolbar=no,location=no,status=no,left=100,top=100,width=${width},height=${height}`);
-			popup.resizeTo(width, height);
+
+			openWindow();
 		});
+
+		requestPlaylists();
 	};
 
 	pub.start = function() {
 		$('#loading').show();
 		var userNameRequest = `/userdata/${userName}`;
 		if (identityCookie) {
-			userNameRequest = `${userNameRequest}?identity-cookie=${maybeUriEncode(identityCookie)}`;
+			userNameRequest += `?identity-cookie=${maybeUriEncode(identityCookie)}`;
 		}
 		$.get(userNameRequest, loadInitialData)
 		.fail(function() {
 			reportBadUsername("HTTP GET request failed");
 		});
+	};
+
+	pub.togglePublishPlaylist = function() {
+		if (isPublishedPlaylist()) {
+			$.ajax({
+				url: `publish/${userName}/${playlistName}`,
+				type: 'DELETE',
+				success: requestUserPlaylists,
+				error: function() {
+					alert(`Failed attempting to unpublish playlist ${playlistName} for user ${userName}`);
+				}
+			});
+		} else {
+			$.post(`publish/${userName}/${playlistName}/${numberToLoad}`, Array.from(playlistFilterItems).join(","), requestUserPlaylists)
+			.fail(function() {
+				alert(`Failed attempting to publish playlist ${playlistName} for user ${userName}`);
+			});
+		}
 	};
 
 	pub.openPlaylist = function() {
@@ -146,13 +152,23 @@ var bcradio = (function() {
 			return;
 		}
 		var playlist = Array.from(playlistItems).join(",");
-		var win = window.open(`${document.location.href.split('?')[0]}?username=${userName}&history=${numberToLoad}&identity=${maybeUriEncode(identityCookie)}&plname=${maybeUriEncode(name)}&pl=${playlist}`, '_blank');
+		var win = window.open(getUrl(userName, numberToLoad, identityCookie, name, playlist), '_blank');
 		if (win) {
 			win.focus();
 		} else {
 			alert('Please allow popups for this website');
 		}
 	};
+
+	pub.playPlaylist = function(usernameVal, playlistNameVal) {
+		userName = usernameVal;
+		playlistName = atob(playlistNameVal);
+		var pl = playlists.get(`${usernameVal}|${playlistName}`);
+		numberToLoad = pl['history'];
+		var urlVal = pl['url'];
+		identityCookie = maybeUriDecode($('#identity-cookie').val().trim());
+		openWindow(urlVal);
+	}
 
 	pub.resequence = function() {
 		switch($('input[name=sequencing]:checked').val()) {
@@ -220,12 +236,6 @@ var bcradio = (function() {
 			playlistItems.delete(playlistItem);
 			trackList.playlistMatchingItems(playlistItem, false);
 		} else {
-			if (identityCookie && !warnedAboutUnshareablePlaylist) {
-				warnedAboutUnshareablePlaylist = true;
-				alert("You are signed in to BC Radio with an 'identity cookie', " +
-					"creating a personal-use-only playlist. To create a shareable playlist please " +
-					"restart BC Radio without providing an identity cookie.");
-			}
 			playlistItems.add(playlistItem);
 			trackList.playlistMatchingItems(playlistItem, true);
 		}
@@ -233,6 +243,51 @@ var bcradio = (function() {
 	}
 
 	///////////////////////////////// private /////////////////////////////////////
+
+	var openWindow = function(playlistUrlVal) {
+		var width;
+		var height;
+		switch($('input[name=windowType]:checked').val()) {
+			case 'vertical':
+				width = 200;
+				height = 520;
+				break;
+			case 'album':
+				width = 800;
+				height = 856;
+				break;
+			case 'mini':
+				width = 460;
+				height = 165;
+				break;
+			default: // same tab
+				if (playlistName) {
+					window.open(getUrl(userName, numberToLoad, identityCookie, playlistName, playlistUrlVal), "_self");
+				} else {
+					pub.start();
+				}
+				return;
+		}
+	
+		var popup = window.open(getUrl(userName, numberToLoad, identityCookie, playlistName, playlistUrlVal),
+			'bcradio',
+			`menubar=no,toolbar=no,location=no,status=no,left=100,top=100,width=${width},height=${height}`);
+		popup.resizeTo(width, height);
+	}
+
+	var getUrl = function(usernameVal, historyVal, identityVal, playlistNameVal, playlistVal) {
+		var trimmedLocation = document.location.href.split('?')[0].replace("#", "");
+		var result = `${trimmedLocation}?username=${usernameVal}&history=${historyVal}&identity=${maybeUriEncode(identityVal)}`;
+		if (playlistNameVal) {
+			result += `&plname=${maybeUriEncode(playlistNameVal)}&pl=${playlistVal}`;
+		}
+		return result;
+	}
+
+	var isPublishedPlaylist = function() {
+		var key = `${userName}|${playlistName}`;
+		return (playlists && playlists.has(key));
+	}
 
 	var loadSkipItems = function() {
 		var s = localStorage.getItem("skipItems");
@@ -255,6 +310,7 @@ var bcradio = (function() {
 			syncIsPlaylist(i);
 		}
 		syncOpenPlaylistButton();
+		requestUserPlaylists();
 	}
 
 	var syncIsPlayed = function(i) {
@@ -289,6 +345,68 @@ var bcradio = (function() {
 		}
 		openPlaylistElt.prop('disabled', true);
 		openPlaylistElt.addClass('disabled-icon');
+	}
+
+	var requestPlaylists = function() {
+		var request = "playlists";
+		$.get(request, loadPlaylists)
+		.fail(function() {
+			alert("Failed loading playlists");
+		});
+	}
+
+	var loadPlaylists = function(data) {
+		parsePlaylists(data);
+		var htmlString = "";
+		var previousUsername = "";
+		for (let key of playlists.keys()) {
+			var [usernameVal, playlistNameVal] = key.split('|');
+			if (previousUsername && usernameVal != previousUsername) {
+				htmlString += "</ul>\n";
+			}
+			if (usernameVal != previousUsername) {
+				htmlString += `<p>${usernameVal}</p>\n<ul>\n`;
+				previousUsername = usernameVal;
+			}
+			htmlString += `<li><a href="#" onclick="bcradio.playPlaylist('${usernameVal}', '${btoa(playlistNameVal)}');">${playlistNameVal}</a></li>\n`;
+		};
+		if (htmlString) {
+			htmlString += "</ul>\n";
+		}
+		playlistsElt.html(htmlString);
+	}
+
+	var requestUserPlaylists = function() {
+		if (!playlistName || cookied === null || !cookied) { return; }
+
+		var request = `playlists/${userName}`;
+		$.get(request, loadUserPlaylists)
+		.fail(function() {
+			alert(`Failed getting existing playlists for user ${userName}`);
+		});
+	}
+
+	var loadUserPlaylists = function(data) {
+		parsePlaylists(data);
+		syncPublishPlaylists();
+	}
+
+	var parsePlaylists = function(data) {
+		playlists = new Map();
+		data.split('\r\n').forEach(function(row){
+			var [usernameVal, playlistNameVal, historyVal, urlVal] = row.split('|');
+			playlists.set(`${usernameVal}|${playlistNameVal}`, { url: urlVal, history: historyVal} );
+		});
+	}
+
+	var syncPublishPlaylists = function() {
+		if (isPublishedPlaylist()) {
+			unpublishPlaylistElt.show();
+			publishPlaylistElt.hide();
+		} else {
+			publishPlaylistElt.show();
+			unpublishPlaylistElt.hide();
+		}
 	}
 
 	var maybeUriDecode = function(s) {
@@ -329,8 +447,10 @@ var bcradio = (function() {
 			if (identityCookie) {
 				if (dataBlobJson.identities.fan) {
 					cookieStatus = " (cookied)";
+					cookied = true;
 				} else {
 					cookieStatus = " (invalid cookie)";
+					cookied = false;
 				}
 			}
 			var collectionName = playlistName || `${fanName}'s collection`;
@@ -388,7 +508,7 @@ var bcradio = (function() {
 			songs.forEach(function(track) {
 				var file = track.file["mp3-v0"] || track.file["mp3-128"];
 				var itemId = album.substring(1);
-				if (!filterItems || filterItems.has(itemId)) {
+				if (!playlistFilterItems || playlistFilterItems.has(itemId)) {
 					trackList.addTrack(track.artist, track.title, file, itemInfos[itemId].artId, itemId, itemInfos[itemId].itemUrl);
 				}
 			});

@@ -30,16 +30,23 @@ Fill in your info:
 
 You can create and share playlists made up of albums in your collection:
 
-* Start a BCRadio session without using the [identity cookie](#understanding-identity-cookies) feature if you plan on sharing the playlist
-   * Shareable playlists are limited to a single "featured track" of each album
+* Start a BCRadio session using the [identity cookie](#understanding-identity-cookies) feature if you plan on pulishing the playlist
 * Click the green up-arrow icon to add the current album to the playlist
    * A second click will remove the album from the playlist
 * Repeat with as many albums as you like
 * Click the external-link icon at the top of the collection list to open the playlist in a new BCRadio session in another tab
-* Copy the address from the new tab to share with your friends
+* In the new tab click the cloud icon next to the playlist name to publish your playlist to the [BCRadio website](https://bcradio.muskratworks.com)
+   * You are limited to 8 published playlists
+   * To unpublish an existing playlist, click its cloud icon again
+   * If you want to save/share the playlist without publishing it, just copy the URL from the address bar
+
+People can listen to published playlists when they arrive at the [BCRadio website](https://bcradio.muskratworks.com):
+
+* Only a single "featured track" of each album will be available to other people listening to your playlist
+* Playlists do not retain their sequencing and are presented in Shuffled or Alphabetic order
 
 This feature is intended to help raise awareness of the great music available on Bandcamp. Please encourage
-your friends to sign up and start their own collections!
+your friends to get Bandcamp accounts and help support musicians!
 
 ## Understanding Identity Cookies
 
@@ -69,9 +76,24 @@ hosted securely on Amazon's EC2 cloud-computing platform.
 -------------
 ## Development
 
+Install Postgres and create `playlists` table
+```
+createdb playlists
+psql playlists
+create table playlists(
+username varchar(80),
+playlist_name varchar(80),
+history integer,
+url text,
+unique (username, playlist_name)
+);
+```
+
+Edit the conf file to make sure the table gets `trust` authentication.
+
 Install Ruby packages
 ```
-gem install http
+bundle install
 ````
 
 Start local server on default port 5678
