@@ -195,9 +195,7 @@ class BcRadio
     puts "==== Playlists request for #{user_name || 'all users'} at #{Time.now}" if $verbose
     result = ''
     begin
-      connection_string = ENV['DATABASE_URL']
-      puts "=========== Conection string: #{connection_string}"
-      con = PG.connect(connection_string)
+      con = PG.connect(ENV['DATABASE_URL'])
       query = 'select * from playlists'
       query += " where username='#{con.escape_string(user_name)}'" if user_name
       query += ' order by username, playlist_name'
@@ -216,7 +214,7 @@ class BcRadio
   def handle_toggle_publish_request user_name, playlist_name, history, url
     puts "==== Handle #{url ? 'publish' : 'unpublish'} request for #{user_name} playlist #{playlist_name} at #{Time.now}" if $verbose
     begin
-      con = PG.connect dbname: 'bcradio', user: 'bcruser'
+      con = PG.connect(ENV['DATABASE_URL'])
       if url
         query = "insert into playlists (username,playlist_name,history,url) values ('#{con.escape_string(user_name)}','#{con.escape_string(playlist_name)}',#{history},'#{con.escape_string(url)}')"
       else
