@@ -139,6 +139,10 @@ var bcradio = (function() {
 				}
 			});
 		} else {
+			if (playlists.length >= 8) {
+				alert("You have already published 8 playlists. Open a new tab and unpublish one of them to add this one.");
+				return;
+			}
 			$.post(`publish/${userName}/${playlistName}/${numberToLoad}`, Array.from(playlistFilterItems).join(","), requestUserPlaylists)
 			.fail(function() {
 				alert(`Failed attempting to publish playlist ${playlistName} for user ${userName}`);

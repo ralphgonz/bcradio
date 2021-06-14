@@ -30,15 +30,15 @@ Fill in your info:
 
 You can create and share playlists made up of albums in your collection:
 
-* Start a BCRadio session using the [identity cookie](#understanding-identity-cookies) feature if you plan on pulishing the playlist
-* Click the green up-arrow icon to add the current album to the playlist
-   * A second click will remove the album from the playlist
-* Repeat with as many albums as you like
-* Click the external-link icon at the top of the collection list to open the playlist in a new BCRadio session in another tab
-* In the new tab click the cloud icon next to the playlist name to publish your playlist to the [BCRadio website](https://bcradio.muskratworks.com)
-   * You are limited to 8 published playlists
-   * To unpublish an existing playlist, click its cloud icon again
-   * If you want to save/share the playlist without publishing it, just copy the URL from the address bar
+* Start a BCRadio session. Use the [identity cookie](#understanding-identity-cookies) feature if you plan on pulishing the playlist.
+* Click the green up-arrow icon to add the current album to the playlist.
+   * A second click will remove the album from the playlist.
+* Repeat with as many albums as you like.
+* Click the external-link icon at the top of the collection list to open the playlist in a new BCRadio session in another tab.
+* In the new tab click the cloud icon next to the playlist name to publish your playlist to the [BCRadio website](https://bcradio.muskratworks.com).
+   * The cloud icon will not appear if you have not provided your [identity cookie](#understanding-identity-cookies). In this case you can still save/share the playlist by copying the URL from the address bar.
+   * You are limited to 8 published playlists.
+   * To unpublish an existing playlist, click its cloud icon again.
 
 People can listen to published playlists when they arrive at the [BCRadio website](https://bcradio.muskratworks.com):
 
@@ -76,10 +76,10 @@ hosted securely on Amazon's EC2 cloud-computing platform.
 -------------
 ## Development
 
-Install Postgres and create `playlists` table
+Install Postgres and create `bcradio` db
 ```
-createdb playlists
-psql playlists
+createdb bcradio
+psql bcradio
 create table playlists(
 username varchar(80),
 playlist_name varchar(80),
@@ -89,7 +89,8 @@ unique (username, playlist_name)
 );
 ```
 
-Edit the conf file to make sure the table gets `trust` authentication.
+Edit the conf file to make sure the table gets `trust` authentication. Also set the environment variable `DATABASE_URL` to 
+point to your local db.
 
 Install Ruby packages
 ```
