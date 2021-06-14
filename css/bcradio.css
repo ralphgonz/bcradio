@@ -80,17 +80,17 @@ ul {
   margin-top: 0px;
 }
 input[type=text] {
-  width: 120px;
+  width: 110px;
 }
 input[type=number] {
-  width: 120px;
+  width: 110px;
 }
 :focus {
   outline: 0 !important;
 }
 .text-label {
   display: inline-block;
-  width: 220px;
+  width: 210px;
   text-align: left;
   margin-bottom: 8px;
 }
