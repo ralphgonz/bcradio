@@ -140,7 +140,7 @@ var bcradio = (function() {
 			});
 		} else {
 			if (playlists.size >= 8) {
-				alert("You have already published 8 playlists. Open a new tab and unpublish one of them to add this one.");
+				alert("You have already published 8 playlists. Open a new tab and unpublish one of them, then refresh this tab to try again.");
 				return;
 			}
 			$.post(`publish/${userName}/${playlistName}/${numberToLoad}`, Array.from(playlistFilterItems).join(","), requestUserPlaylists)
