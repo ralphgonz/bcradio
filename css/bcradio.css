@@ -79,12 +79,18 @@ p {
 ul {
   margin-top: 0px;
 }
+input[type=text] {
+  width: 120px;
+}
+input[type=number] {
+  width: 120px;
+}
 :focus {
   outline: 0 !important;
 }
 .text-label {
   display: inline-block;
-  width: 230px;
+  width: 220px;
   text-align: left;
   margin-bottom: 8px;
 }
