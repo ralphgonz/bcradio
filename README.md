@@ -55,9 +55,13 @@ each album, and is limited to mp3-128k streaming resolution. By providing your B
 loading all your purchased tracks rather than just the "featured" tracks, and also enable mp3-V0 sound quality.
 
 You can find your identity cookie by logging into the Bandcamp website in another tab, enabling your browser's developer 
-tools, and copying the value from (Application >) Storage > Cookies > bandcamp.com > identity.
+tools, and copying the value from `(Application >) Storage > Cookies > bandcamp.com > identity`. It's a long URL-encoded
+string like:
+```
+7%09S%3Bk9rNU0kEm%2Fi3afa%2BTCB1%2BvkPHm5Jl9ULJrK7JjrMc%3D%09%7B%22id%22%3A1185531561%2A%22ex%22%3B0%6D
+```
 
-* _Unfortunately many mobile devices do not support this feature_
+_Unfortunately many mobile devices do not support this feature_
 
 ## Security
 
