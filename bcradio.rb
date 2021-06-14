@@ -195,7 +195,9 @@ class BcRadio
     puts "==== Playlists request for #{user_name || 'all users'} at #{Time.now}" if $verbose
     result = ''
     begin
-      con = PG.connect(ENV['DATABASE_URL'])
+      connection_string = ENV['DATABASE_URL']
+      puts "=========== Conection string: #{connection_string}"
+      con = PG.connect(connection_string)
       query = 'select * from playlists'
       query += " where username='#{con.escape_string(user_name)}'" if user_name
       query += ' order by username, playlist_name'
