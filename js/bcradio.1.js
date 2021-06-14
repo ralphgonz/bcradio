@@ -105,6 +105,7 @@ var bcradio = (function() {
 			userName = $('#user-name').val().trim();
 			numberToLoad = $('#history').val().trim();
 			identityCookie = maybeUriDecode($('#identity-cookie').val().trim());
+			playlistName = null;
 			if (!userName) {
 				reportBadUsername();
 				return;
