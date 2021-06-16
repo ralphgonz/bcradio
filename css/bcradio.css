@@ -113,13 +113,13 @@ input[type=number] {
   padding: 10px;
 }
 #params-form {
-  margin: 0 0 0 0;
+  margin: 30 0 0 0;
 }
 #playlists {
   margin: 0 0 0 0;
 }
 #window-type {
-  margin: 0 0 10 0;
+  margin: 30 0 10 0;
 }
 #submit-button {
   margin-top: 10px;
@@ -127,6 +127,7 @@ input[type=number] {
   border-color: #BBFFFF;
   width: 320px;
   height: 30px;
+  font-size: 16;
 }
 #title1 {
   color: #BBFFFF;
