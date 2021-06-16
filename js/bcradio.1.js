@@ -152,7 +152,10 @@ var bcradio = (function() {
 	};
 
 	pub.openPlaylist = function() {
-		var name = prompt("Playlist name", "Playlist");
+		var promptString = cookied
+			? "Playlist name"
+			: "You can create a playlist without providing an 'identity cookie', but you will not be able to publish it to the BCRadio login screen (see the help page: https://github.com/ralphgonz/bcradio#playlists).\n\nPlaylist name";
+		var name = prompt(promptString, "Playlist");
 		if (!name) {
 			return;
 		}
